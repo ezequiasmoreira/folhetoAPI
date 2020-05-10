@@ -24,19 +24,12 @@ Route::get('open', 'DataController@open');
 
 //localização
 Route::group(["prefix" => "pais","namespace" => "localizacao"], function () {    
-    Route::get("/{id}", "PaisController@getPais");
-    
+    Route::get("/{id}", "PaisController@getPais");    
 });
-/*
 Route::group(["prefix" => "cidade","namespace" => "localizacao"], function () {
-    Route::get("/{id}/excluir", "CidadeController@excluir");
     Route::get("/{id}", "CidadeController@getCidade");
-    Route::get("/{estadoId}/estado", "CidadeController@ggetCidadePorEstado");
-    Route::post("/salvar", "CidadeController@salvar");
-    Route::post("/atualizar", "CidadeController@atualizar");
+    Route::get("/{estado_id}/estado", "CidadeController@getCidadePorEstado");
 });
-*/
-
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');
@@ -53,6 +46,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete("/{id}/excluir", "EstadoController@excluir");
         Route::post("/salvar", "EstadoController@salvar");
         Route::put("/atualizar", "EstadoController@atualizar");
+    });    
+    Route::group(["prefix" => "cidade","namespace" => "localizacao"], function () {
+        Route::delete("/{id}/excluir", "CidadeController@excluir");
+        Route::post("/salvar", "CidadeController@salvar");
+        Route::put("/atualizar", "CidadeController@atualizar");
     });
 });
 
