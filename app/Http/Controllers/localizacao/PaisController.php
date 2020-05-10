@@ -20,6 +20,9 @@ class PaisController extends Controller
     }
 
     public function atualizar(Request $request){
+        if (!$request->id){
+            return response()->json(['mensagem' =>'Não informado o pais para atualizar'],500);
+        } 
         $pais = $this->pais->find($request->id);
         $pais->update($request->all());
         return response()->json($pais,200);

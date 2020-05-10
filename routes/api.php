@@ -37,6 +37,7 @@ Route::group(["prefix" => "cidade","namespace" => "localizacao"], function () {
 });
 */
 
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('closed', 'DataController@closed');
@@ -47,6 +48,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post("/salvar", "PaisController@salvar");
         Route::Put("/atualizar", "PaisController@atualizar");
         
+    });
+    Route::group(["prefix" => "estado","namespace" => "localizacao"], function () {
+        Route::delete("/{id}/excluir", "EstadoController@excluir");
+        Route::post("/salvar", "EstadoController@salvar");
+        Route::put("/atualizar", "EstadoController@atualizar");
     });
 });
 

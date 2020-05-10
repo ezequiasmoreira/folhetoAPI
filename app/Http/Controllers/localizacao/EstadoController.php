@@ -19,12 +19,15 @@ class EstadoController extends Controller
     }
 
     public function atualizar(Request $request){
+        if (!$request->id){
+            return response()->json(['mensagem' =>'Não informado o estado para atualizar'],500);
+        }        
         $estado = $this->getEstado($request->id);
         $estado->update($request->all());
         return response()->json($estado,200);
     }
 
-    public function excluir($id) {
+    public function excluir($id) { 
         $this->getEstado($id)->delete();
         $retorno = [
             'mensagem' => 'excluído com sucesso'
