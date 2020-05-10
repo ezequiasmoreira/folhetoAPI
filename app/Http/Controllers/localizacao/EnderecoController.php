@@ -34,7 +34,7 @@ class EnderecoController extends Controller
         $this->getEndereco($id)->delete();
         return response()->json(['mensagem' => 'excluído com sucesso'],200);
     }
-    protected function getEndereco($id)  {
+    public function getEndereco($id)  {
         return $this->endereco->find($id);
     }
 }

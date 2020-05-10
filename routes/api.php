@@ -57,6 +57,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post("/salvar", "EnderecoController@salvar");
         Route::put("/atualizar", "EnderecoController@atualizar");
     });
+
+    Route::group(["prefix" => "empresa"], function () {
+        Route::delete("/{id}/excluir", "EmpresaController@excluir");
+        Route::post("/salvar", "EmpresaController@salvar");
+        Route::put("/atualizar", "EmpresaController@atualizar");
+        Route::get("/", "EmpresaController@getEmpresaUsuarioLogado");
+    });
 });
 
 

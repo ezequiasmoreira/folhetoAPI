@@ -42,6 +42,7 @@
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
+                'perfil' => $request->get('perfil') ? $request->get('perfil') : 'usuario',
             ]);
 
             $token = JWTAuth::fromUser($user);
