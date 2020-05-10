@@ -52,6 +52,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post("/salvar", "CidadeController@salvar");
         Route::put("/atualizar", "CidadeController@atualizar");
     });
+    Route::group(["prefix" => "endereco","namespace" => "localizacao"], function () {
+        Route::delete("/{id}/excluir", "EnderecoController@excluir");
+        Route::post("/salvar", "EnderecoController@salvar");
+        Route::put("/atualizar", "EnderecoController@atualizar");
+    });
 });
 
 

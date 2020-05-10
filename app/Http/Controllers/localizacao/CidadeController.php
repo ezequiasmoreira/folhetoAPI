@@ -17,7 +17,7 @@ class CidadeController extends Controller
 
    public function salvar(Request $request){
         $cidade = Cidade::create($request->all());
-        return response()->json($cidade);
+        return response()->json($cidade,200);
     }
     public function atualizar(Request $request){
         if (!$request->id){
