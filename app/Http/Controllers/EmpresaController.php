@@ -29,7 +29,7 @@ class EmpresaController extends Controller
             return response()->json(['mensagem'=>'CNPJ não informado para pessoa jurídica'],500);
         }
         $empresa = Empresa::create($request->all());
-        return response()->json($empresa,200);
+        return response()->json($empresa,201);
     }
 
     public function atualizar(Request $request){

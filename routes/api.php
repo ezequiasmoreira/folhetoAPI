@@ -64,6 +64,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::put("/atualizar", "EmpresaController@atualizar");
         Route::get("/", "EmpresaController@getEmpresaUsuarioLogado");
     });
+    Route::group(["prefix" => "funcionario"], function () {
+        Route::delete("/{id}/excluir", "FuncionarioController@excluir");
+        Route::post("/salvar", "FuncionarioController@salvar");
+    });
 });
 
 
