@@ -61,6 +61,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::group(["prefix" => "empresa"], function () {
         Route::delete("/{id}/excluir", "EmpresaController@excluir");
         Route::post("/salvar", "EmpresaController@salvar");
+        Route::post("/logo", "EmpresaController@salvarLogo");
         Route::put("/atualizar", "EmpresaController@atualizar");
         Route::get("/", "EmpresaController@getEmpresaUsuarioLogado");
     });

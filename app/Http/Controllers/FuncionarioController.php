@@ -15,7 +15,19 @@ class FuncionarioController extends Controller
     public function __construct()  {
         $this->funcionario = new Funcionario();
     }
-
+/*
+{
+	"name": "Funcionario teste",
+    "email": "F@F13",
+    "password": "mantena",
+    "password_confirmation":"mantena",
+    "rua":"São bernado",
+    "numero":150,
+     "bairro":"Centro",
+    "complemento":"Proxximo a esucri",
+    "cep":"88852-536",
+    "cidade_id":2 
+}*/
     public function salvar(Request $request){       
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

@@ -31,7 +31,15 @@ class EmpresaController extends Controller
         $empresa = Empresa::create($request->all());
         return response()->json($empresa,201);
     }
-
+    public function salvarLogo(Request $request){
+        $fileName= "empresa_".$request->indice.".jpg";
+        $path = $request->file('photo')->move(public_path("/empresa/"),$fileName);
+        $photoUrl = url('/empresa/'.$fileName);
+        $empresa = $this->getEmpresa($request->indice);
+        $empresa->logo =  $photoUrl;
+        $empresa->save();
+        return response()->json(['url' =>  $photoUrl],200);
+    }
     public function atualizar(Request $request){
         if (!$request->id){
             return response()->json(['mensagem' =>'Não informado a empresa para atualizar'],500);
