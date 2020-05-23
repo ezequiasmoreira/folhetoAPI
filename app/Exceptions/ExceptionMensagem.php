@@ -20,7 +20,7 @@ class ExceptionMensagem
             ['codigo'=> 2 ,'descricao'=> 'Quantidade de interesses ? é diferente da quantidade exigido ?.'],
             ['codigo'=> 3 ,'descricao'=> 'Informado mais de um usuário para atualizar os interesses'],
             ['codigo'=> 4 ,'descricao'=> 'O valor informado ? para status não é permitido, deve ser enviado ?.'],
-            ['codigo'=> 5 ,'descricao'=> 'Usuário inválido.'],
+            ['codigo'=> 5 ,'descricao'=> '? inválido.'],
             ['codigo'=> 6 ,'descricao'=> 'Código ? inválido, códigos permitido: ?.'],
         ];
     }

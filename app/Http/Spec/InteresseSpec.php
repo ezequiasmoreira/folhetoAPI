@@ -37,4 +37,9 @@ class InteresseSpec
             ApiException::lancarExcessao(6,$codigoAtualizar.','.$codigos); 
         }
     }
+    public function validarInteresse ($interesse){
+        if(!$interesse){
+            ApiException::lancarExcessao(5,'Interesse'); 
+        }
+    }
 }

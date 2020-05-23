@@ -10,7 +10,7 @@ class UserSpec
     
     public function validarUsuario($usuario){
         if(!$usuario){
-            ApiException::lancarExcessao(5); 
+            ApiException::lancarExcessao(5,'Usuário'); 
         }        
     }
 }

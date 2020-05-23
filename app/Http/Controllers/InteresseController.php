@@ -19,7 +19,7 @@ class InteresseController extends Controller
         try {
             $interesseService = new InteresseService(); 
             $interesseService->interessePermiteAtualizar($request);
-            return response()->json($c,200);
+            $interesseService->atualizar($request);
             return response()->json(count($enums) ,200);
             $interesse = Interesse::where('usuario_id',1)->first();
             if($interesse){

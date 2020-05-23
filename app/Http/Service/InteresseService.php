@@ -5,6 +5,7 @@ namespace App\Http\Service;
 use Illuminate\Http\Request;
 use App\Enums\TipoInteresse;
 use App\Http\Spec\InteresseSpec;
+use App\Http\Repository\InteresseRepository;
 use App\Exceptions\ApiException;
 use App\Interesse;
 use App\User;
@@ -13,9 +14,11 @@ class InteresseService
 {
     public $usuarioService;
     public $interreseSpec;
+    public $interesseRepository;
     public function __construct()  {
         $this->usuarioService = new UserService();
         $this->interreseSpec = new InteresseSpec();
+        $this->interesseRepository = new InteresseRepository();
     }
     public function salvar (User $usuario){  
         //$usuarioLogado = $this->usuarioService->obterUsuarioLogado();                
@@ -59,20 +62,18 @@ class InteresseService
         return true;
     }
     public function atualizar (Request $request){  
-        /*                
-        $interesse = Interesse::where('usuario_id',$usuario->id)->first();
-        if($interesse){
-            ApiException::lancarExcessao(1);            
-        }
-        $enums = TipoInteresse::getValues();
-        foreach ($enums as $enun) {
-            $interesse = new Interesse();
-            $interesse->codigo = $enun['codigo'];
-            $interesse->descricao = $enun['descricao'];
-            $interesse->status = false;
-            $interesse->usuario_id = $usuario->id;
-            $interesse->save();
-        }*/
+        $interessesAtualizar = $request->toArray();   
+        foreach ($interessesAtualizar as $interesseAtualizar) { 
+            $usuarioId = $interesseAtualizar['usuario'];
+            $codigo = $interesseAtualizar['codigo'];                                       
+            $status = $interesseAtualizar['status'];                                       
+            $interesse = $this->interesseRepository->obterPorUsuarioCodigo($usuarioId,$codigo);
+            $interesse->status = $status;
+            $interesse->Save();
+        }                   
         return true;
+    }
+    public function validarInteresse ($interesse){
+        $this->interreseSpec->validarInteresse($interesse);
     }
 }
