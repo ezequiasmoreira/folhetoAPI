@@ -19,6 +19,11 @@ class InteresseSpec
             ApiException::lancarExcessao(4,$status.','.'1 ou 2'); 
         }
     }
+    public function validarUsuarioPermitido($primeiroUsuario,$usuario){
+        if ($primeiroUsuario != $usuario->id){
+            ApiException::lancarExcessao(3); 
+        }
+    }
     public function validarCodigoPermitido($tipoInteresses,$codigoAtualizar){
         $permitido = false;
         $codigos ='';

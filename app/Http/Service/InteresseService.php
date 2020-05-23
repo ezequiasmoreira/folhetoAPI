@@ -45,11 +45,16 @@ class InteresseService
                 'quantidadeRegistroExigido' => $quantidadeRegistroExigido
             ];
             $this->interreseSpec->validarQuantidadePermitido($argumentos);
-                                
-            foreach ($interessesAtualizar as $interesseAtualizar) {               
+
+            $primeiroUsuario =0;     
+            $incremento = 0;               
+            foreach ($interessesAtualizar as $interesseAtualizar) {                                             
                 $this->interreseSpec->validarStatusPermitido($interesseAtualizar['status']); 
-                $this->usuarioService->obterPorId($interesseAtualizar['usuario']);          
-                $this->interreseSpec->validarCodigoPermitido($tipoInteresses,$interesseAtualizar['codigo']);                
+                $usuario = $this->usuarioService->obterPorId($interesseAtualizar['usuario']); 
+                $primeiroUsuario  = !$incremento ? $usuario->id : $primeiroUsuario; 
+                $this->interreseSpec->validarUsuarioPermitido($primeiroUsuario,$usuario);       
+                $this->interreseSpec->validarCodigoPermitido($tipoInteresses,$interesseAtualizar['codigo']);  
+                $incremento++;              
             }
         return true;
     }
