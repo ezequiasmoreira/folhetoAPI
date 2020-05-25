@@ -27,8 +27,14 @@
 
             return response()->json(compact('token'));
         }
-
-        public function register(Request $request)
+        /*{
+                "name": "Test Man"
+                "email": "test@email.com"
+                "password": "secret"
+                "password_confirmation": "secret"
+        }
+         */
+        public function cadastrar(Request $request)
         {
                 try {
                         $validator = Validator::make($request->all(), [
