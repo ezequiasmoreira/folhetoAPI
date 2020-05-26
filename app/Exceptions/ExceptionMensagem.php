@@ -22,6 +22,8 @@ class ExceptionMensagem
             ['codigo'=> 4 ,'descricao'=> 'O valor informado ? para status não é permitido, deve ser enviado ?.'],
             ['codigo'=> 5 ,'descricao'=> '? inválido.'],
             ['codigo'=> 6 ,'descricao'=> 'Código ? inválido, códigos permitido: ?.'],
+            ['codigo'=> 7 ,'descricao'=> 'Não permitido. Usuário ? não possui permissão para alterar o usuário ?.'],
+            ['codigo'=> 8 ,'descricao'=> 'Perfil ? inválido, perfis permitido: ?.'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Service;
 use App\Http\Repository\UserRepository;
+use App\Enums\Perfil;
 use App\Http\Spec\UserSpec;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -25,5 +26,19 @@ class UserService
     }
     public function validarUsuario($usuario){        
         return $this->userSpec->validarUsuario($usuario);
+    }
+    public function atualizar($request){   
+        $usuario = $this->obterPorId($request->id);
+        $usuarioLogado = $this->obterUsuarioLogado();  
+        $this->usuarioPermiteAlterar($usuario,$usuarioLogado);
+        $usuario->name = $request->name;
+        $usuario->save();  
+        return true;
+    }
+    public function usuarioPermiteAlterar($usuario,$usuarioLogado){        
+        $perfisPermitido = Perfil::getValues(); 
+        $this->userSpec->validarPerfilPermitido($usuarioLogado->perfil,$perfisPermitido);
+        $this->userSpec->validarPermissaoPorPerfil($usuario,$usuarioLogado);
+        return true;
     }
 }

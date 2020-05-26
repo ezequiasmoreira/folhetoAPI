@@ -9,6 +9,7 @@
     use JWTAuth;
     use Tymon\JWTAuth\Exceptions\JWTException;
     use App\Http\Service\InteresseService;
+    use App\Http\Service\UserService;
     use Exception;
 
     class UserController extends Controller
@@ -61,6 +62,24 @@
                 } catch (Exception $e) {
                         return response()->json(['mensagem'=> $e->getMessage()],500);
                 }
+        }
+        public function atualizar(Request $request)
+        {
+                try {
+                        $userService = new UserService();
+                        $validator = Validator::make($request->all(), [
+                                'id' =>  'required',
+                                'name' => 'required|string|max:255'
+                        ]);
+
+                        if($validator->fails()){
+                                return response()->json($validator->errors()->toJson(), 400);
+                        }
+                        $userService->atualizar($request);                       
+                } catch (Exception $e) {
+                        return response()->json(['mensagem'=> $e->getMessage()],500);
+                }
+               return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
         }
 
         public function getAuthenticatedUser()

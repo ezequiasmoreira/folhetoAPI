@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::group(["prefix" => "usuario"], function () {
+    Route::delete("/{id}/excluir", "FuncionarioController@excluir");
+    Route::post("/salvar", "FuncionarioController@salvar");
+});
 Route::post('usuario/cadastrar', 'UserController@cadastrar');
 Route::post('login', 'UserController@authenticate');
 Route::get('open', 'DataController@open');
@@ -36,7 +39,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('enum', 'InteresseController@testarEnum');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('closed', 'DataController@closed');
-
+    //usuário
+    Route::group(["prefix" => "usuario"], function () {
+        Route::put("/atualizar", "UserController@atualizar");
+    });
+    
     //localizacao
     Route::group(["prefix" => "pais","namespace" => "localizacao"], function () {    
         Route::delete("/{id}/excluir", "PaisController@excluir");
