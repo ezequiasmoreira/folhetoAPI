@@ -24,6 +24,8 @@ class ExceptionMensagem
             ['codigo'=> 6 ,'descricao'=> 'Código ? inválido, códigos permitido: ?.'],
             ['codigo'=> 7 ,'descricao'=> 'Não permitido. Usuário ? não possui permissão para alterar o usuário ?.'],
             ['codigo'=> 8 ,'descricao'=> 'Perfil ? inválido, perfis permitido: ?.'],
+            ['codigo'=> 9 ,'descricao'=> 'Perfil ? inválido, para funcionário'],
+            ['codigo'=> 10 ,'descricao'=> 'Usuário ? não está vinculado a empresa ?.'],
         ];
     }
 }

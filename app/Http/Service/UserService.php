@@ -36,9 +36,12 @@ class UserService
         return true;
     }
     public function usuarioPermiteAlterar($usuario,$usuarioLogado){        
-        $perfisPermitido = Perfil::getValues(); 
+        $perfisPermitido = $this->obterPerfisPermitido(); 
         $this->userSpec->validarPerfilPermitido($usuarioLogado->perfil,$perfisPermitido);
         $this->userSpec->validarPermissaoPorPerfil($usuario,$usuarioLogado);
         return true;
+    }
+    public function obterPerfisPermitido(){
+       return Perfil::getValues();
     }
 }
