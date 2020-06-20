@@ -3,8 +3,8 @@
     namespace App\Http\Controllers;
 
     use App\User;
+    use Illuminate\Support\Facades\DB;
     use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Facades\Validator;
     use JWTAuth;
     use Tymon\JWTAuth\Exceptions\JWTException;
@@ -14,6 +14,10 @@
 
     class UserController extends Controller
     {
+        private $usuarioService;
+        public function __construct()  {
+                $this->usuarioService = new UserService();
+            }    
         public function authenticate(Request $request)
         {
             $credentials = $request->only('email', 'password');
@@ -28,15 +32,9 @@
 
             return response()->json(compact('token'));
         }
-        /*{
-                "name": "Test Man"
-                "email": "test@email.com"
-                "password": "secret"
-                "password_confirmation": "secret"
-        }
-         */
         public function cadastrar(Request $request)
         {
+                DB::beginTransaction();
                 try {
                         $validator = Validator::make($request->all(), [
                         'name' => 'required|string|max:255',
@@ -47,21 +45,16 @@
                         if($validator->fails()){
                                 return response()->json($validator->errors()->toJson(), 400);
                         }
-                        $user = User::create([
-                                'name' => $request->get('name'),
-                                'email' => $request->get('email'),
-                                'password' => Hash::make($request->get('password')),
-                                'perfil' => $request->get('perfil') ? $request->get('perfil') : 'usuario',
-                        ]);
-
+                        $user = $this->usuarioService->salvar($request);       
                         $interesseService = new InteresseService();                        
                         $interesseService->salvar($user);                       
-                        $token = JWTAuth::fromUser($user);
-
-                        return response()->json(compact('user','token'),201);
-                } catch (Exception $e) {
-                        return response()->json(['mensagem'=> $e->getMessage()],500);
+                        $token = JWTAuth::fromUser($user);                        
+                } catch (Exception $exception) {
+                        DB::rollBack();
+                        return response()->json(['mensagem'=> $exception->getMessage()],500);
                 }
+                DB::commit();
+                return response()->json(compact('user','token'),201);
         }
         public function atualizar(Request $request)
         {

@@ -18,11 +18,11 @@ Route::post('documentacao', 'DocumentacaoController@testar');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(["prefix" => "usuario"], function () {
+Route::group(["prefix" => "funcionario"], function () {
     Route::delete("/{id}/excluir", "FuncionarioController@excluir");
     Route::post("/salvar", "FuncionarioController@salvar");
 });
-Route::post('usuario/cadastrar', 'UserController@cadastrar');
+Route::post('usuario/salvar', 'UserController@cadastrar');
 Route::post('login', 'UserController@authenticate');
 Route::get('open', 'DataController@open');
 

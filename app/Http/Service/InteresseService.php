@@ -21,7 +21,7 @@ class InteresseService
         $this->interesseRepository = new InteresseRepository();
     }
     public function salvar (User $usuario){  
-        //$usuarioLogado = $this->usuarioService->obterUsuarioLogado();                
+        $this->usuarioService->validarUsuario($usuario);              
         $interesse = Interesse::where('usuario_id',$usuario->id)->first();
         if($interesse){
             ApiException::lancarExcessao(1);            

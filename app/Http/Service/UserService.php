@@ -2,6 +2,7 @@
 
 namespace App\Http\Service;
 use App\Http\Repository\UserRepository;
+use Illuminate\Support\Facades\Hash;
 use App\Enums\Perfil;
 use App\Http\Spec\UserSpec;
 use Illuminate\Support\Facades\Auth;
@@ -43,5 +44,18 @@ class UserService
     }
     public function obterPerfisPermitido(){
        return Perfil::getValues();
+    }
+    public function salvar($request){
+        if ($request->get('perfil')){
+            $perfisPermitido = $this->obterPerfisPermitido(); 
+            $this->userSpec->validarPerfilPermitido($request->get('perfil'),$perfisPermitido); 
+        }
+        $user = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+            'perfil' => $request->get('perfil') ? $request->get('perfil') : 'USUARIO',
+        ]);
+        return $user;
     }
 }
