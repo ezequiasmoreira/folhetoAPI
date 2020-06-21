@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Service\EmpresaService;
+use Exception;
 use App\Empresa;
 
 class EmpresaController extends Controller
@@ -15,15 +16,13 @@ class EmpresaController extends Controller
         $this->empresaService = new EmpresaService();
     }
     public function salvar(Request $request){
-        $this->empresaService->validarCamposObrigatorioSalvar($request);        
-        $request->tipo = strtoupper($request->tipo);
-        if(($request->tipo != "JURIDICA")||($request->tipo != "FISICA")){
-            return response()->json(['mensagem'=>'TIPO inválido'],500);
+        try {
+            $this->empresaService->validar($request);        
+            
+            $empresa = Empresa::create($request->all());
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
-        if(($request->tipo == "JURIDICA") && (!$request->cnpj)){
-            return response()->json(['mensagem'=>'CNPJ não informado para pessoa jurídica'],500);
-        }
-        $empresa = Empresa::create($request->all());
         return response()->json($empresa,201);
     }
     public function salvarLogo(Request $request){

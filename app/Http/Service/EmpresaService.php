@@ -15,14 +15,15 @@ class EmpresaService
         if ($usuario->perfil == 'FUNCIONARIO'){
             $funcionario = Funcionario::where('usuario_id',$usuario->id)->get('*');
             $empresa = $this->getEmpresa($funcionario->empresa_id);
-            return $empresa;
-            
+            return $empresa;            
         }        
         $empresa = Empresa::where('usuario_id',$usuario->id)->first();
         return $empresa;
     }
-    public function validarCamposObrigatorioSalvar($request){
+    public function validar($request){
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
+        $this->empresaSpec->validarTipo($request->tipo);
+        $this->empresaSpec->validarTipoJuridica($request);           
         return true;
     }
 }

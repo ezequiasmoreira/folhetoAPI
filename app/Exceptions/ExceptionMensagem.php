@@ -28,6 +28,10 @@ class ExceptionMensagem
             ['codigo'=> 10 ,'descricao'=> 'Usuário ? não está vinculado a empresa ?.'],
             ['codigo'=> 11 ,'descricao'=> '?'],
             ['codigo'=> 12 ,'descricao'=> 'Usuário com perfil de funcionário somente ser criado/atualizado, ao criar uma empresa ou criar um usuário vinculado a uma empresa.'],
+            ['codigo'=> 13 ,'descricao'=> 'Tipo ? inválido. Tipos permitido: ?.'],
+            ['codigo'=> 14 ,'descricao'=> '? obrigatório.'],
+            ['codigo'=> 15 ,'descricao'=> 'Quantidade de digitos incorreta para o campo ?. Quantidade correta ?.'],
+            ['codigo'=> 16 ,'descricao'=> 'Campo ? inválido. Formato esperado: ?.'],
         ];
     }
 }
