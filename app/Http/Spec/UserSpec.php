@@ -1,10 +1,9 @@
 <?php
 namespace App\Http\Spec;
 use App\Exceptions\ApiException;
-use App\Http\Service\UserService;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Service\EmpresaService;
 use App\Enums\Perfil;
-use App\User;
 
 class UserSpec
 {
@@ -66,6 +65,17 @@ class UserSpec
         if(!$permitido){
             ApiException::lancarExcessao(8,$perfil.','.$perfis);
         }
+        return true;      
+    }
+    public function validarCamposObrigatorio($request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            ]);
+            if($validator->fails()){
+                ApiException::lancarExcessao(11,$validator->errors()->toJson());
+            }
         return true;      
     }
 }

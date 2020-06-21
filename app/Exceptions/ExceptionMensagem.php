@@ -26,6 +26,7 @@ class ExceptionMensagem
             ['codigo'=> 8 ,'descricao'=> 'Perfil ? inválido, perfis permitido: ?.'],
             ['codigo'=> 9 ,'descricao'=> 'Perfil ? inválido, para funcionário'],
             ['codigo'=> 10 ,'descricao'=> 'Usuário ? não está vinculado a empresa ?.'],
+            ['codigo'=> 11 ,'descricao'=> '?'],
         ];
     }
 }

@@ -2,7 +2,6 @@
 
     namespace App\Http\Controllers;
 
-    use App\User;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Validator;
@@ -35,16 +34,8 @@
         public function cadastrar(Request $request)
         {
                 DB::beginTransaction();
-                try {
-                        $validator = Validator::make($request->all(), [
-                        'name' => 'required|string|max:255',
-                        'email' => 'required|string|email|max:255|unique:users',
-                        'password' => 'required|string|min:6|confirmed',
-                        ]);
-
-                        if($validator->fails()){
-                                return response()->json($validator->errors()->toJson(), 400);
-                        }
+                try {                       
+                        $this->usuarioService->validarCamposObrigatorio($request);
                         $user = $this->usuarioService->salvar($request);       
                         $interesseService = new InteresseService();                        
                         $interesseService->salvar($user);                       
