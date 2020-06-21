@@ -4,7 +4,6 @@
 
     use Illuminate\Support\Facades\DB;
     use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Validator;
     use JWTAuth;
     use Tymon\JWTAuth\Exceptions\JWTException;
     use App\Http\Service\InteresseService;

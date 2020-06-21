@@ -4,23 +4,18 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Http\Service\EmpresaService;
 use App\Empresa;
 
 class EmpresaController extends Controller
 {
+    private $empresaService;
     public function __construct()  {
         $this->empresa = new Empresa();
+        $this->empresaService = new EmpresaService();
     }
     public function salvar(Request $request){
-        $validator = Validator::make($request->all(), [
-            'razao_social' => 'required|string|max:255',
-            'nome_fantasia' => 'required|string|max:255',
-            'cpf' => 'required|string|max:14|min:14|unique:empresas',
-            'tipo' => 'required|string',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        $this->empresaService->validarCamposObrigatorioSalvar($request);        
         $request->tipo = strtoupper($request->tipo);
         if(($request->tipo != "JURIDICA")||($request->tipo != "FISICA")){
             return response()->json(['mensagem'=>'TIPO inválido'],500);
