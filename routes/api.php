@@ -23,7 +23,7 @@ Route::group(["prefix" => "funcionario"], function () {
     Route::post("/salvar", "FuncionarioController@salvar");
 });
 Route::post('usuario/salvar', 'UserController@cadastrar');
-Route::post('login', 'UserController@authenticate');
+Route::post('login', 'UserController@autenticar');
 Route::get('open', 'DataController@open');
 
 

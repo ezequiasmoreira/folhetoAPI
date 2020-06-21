@@ -4,7 +4,7 @@ use App\Http\Documentacao\Documentacao;
 final class UserController implements Documentacao {  
       
     public function finalidade(){        
-        return "Reposnsavel por disponibilizar os recursos do usuário";
+        return "Reposnsável por disponibilizar os recursos do usuário";
     }
     public function cadastrar(){
         $retorno = [
@@ -12,13 +12,26 @@ final class UserController implements Documentacao {
             "vinculado ao usuário cadastrado, para posteriormente ser atualizado',
             'verbo' => 'post',
             'url' => 'http://localhost:8000/api/usuario/salvar',
-            'json-esperado' => ["name"      => "Test Man",
+            'json-esperado' => [
+                                "name"      => "Test Man",
                                 "email"     => "test@email.com",
                                 "password"  => "secret",
                                 "password_confirmation" => "secret",
                                 "perfil" => "",
                             ],
             ];        
+        return $retorno;
+    }
+    public function autenticar(){
+        $retorno = [
+            'mensagem' => 'Recurso para autenticar uma requisição de login do usuário".',
+            'verbo' => 'post',
+            'url' => 'localhost:8000/api/login',
+            'json-esperado' => [
+                                "email"     => "test@email.com",
+                                "password"  => "secret",
+                            ],
+            ];         
         return $retorno;
     }
 }
