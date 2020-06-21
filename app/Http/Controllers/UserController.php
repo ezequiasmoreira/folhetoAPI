@@ -17,7 +17,7 @@
         public function __construct()  {
                 $this->usuarioService = new UserService();
             }    
-        public function authenticate(Request $request)
+        public function autenticar(Request $request)
         {
             $credentials = $request->only('email', 'password');
 
