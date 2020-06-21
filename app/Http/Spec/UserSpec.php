@@ -67,7 +67,7 @@ class UserSpec
         }
         return true;      
     }
-    public function validarCamposObrigatorio($request){
+    public function validarCamposObrigatorioCadastrar($request){
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -76,6 +76,16 @@ class UserSpec
             if($validator->fails()){
                 ApiException::lancarExcessao(11,$validator->errors()->toJson());
             }
+        return true;      
+    }
+    public function validarCamposObrigatorioAtualizar($request){        
+        $validator = Validator::make($request->all(), [
+            'id' =>  'required',
+            'name' => 'required|string|max:255'
+        ]);
+        if($validator->fails()){
+            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+        }
         return true;      
     }
 }

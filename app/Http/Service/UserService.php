@@ -58,14 +58,12 @@ class UserService
         ]);
         return $user;
     }
-    public function validarCamposObrigatorio($request){
-        $this->userSpec->validarCamposObrigatorio($request);        
-        $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'perfil' => $request->get('perfil') ? $request->get('perfil') : 'USUARIO',
-        ]);
-        return $user;
+    public function validarCamposObrigatorioCadastrar($request){
+        $this->userSpec->validarCamposObrigatorioCadastrar($request); 
+        return true;
+    }
+    public function validarCamposObrigatorioAtualizar($request){
+        $this->userSpec->validarCamposObrigatorioAtualizar($request); 
+        return true;
     }
 }

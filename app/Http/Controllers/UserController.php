@@ -35,7 +35,7 @@
         {
                 DB::beginTransaction();
                 try {                       
-                        $this->usuarioService->validarCamposObrigatorio($request);
+                        $this->usuarioService->validarCamposObrigatorioCadastrar($request);
                         $user = $this->usuarioService->salvar($request);       
                         $interesseService = new InteresseService();                        
                         $interesseService->salvar($user);                       
@@ -50,16 +50,8 @@
         public function atualizar(Request $request)
         {
                 try {
-                        $userService = new UserService();
-                        $validator = Validator::make($request->all(), [
-                                'id' =>  'required',
-                                'name' => 'required|string|max:255'
-                        ]);
-
-                        if($validator->fails()){
-                                return response()->json($validator->errors()->toJson(), 400);
-                        }
-                        $userService->atualizar($request);                       
+                        $this->usuarioService->validarCamposObrigatorioAtualizar($request);
+                        $this->usuarioService->atualizar($request);                       
                 } catch (Exception $e) {
                         return response()->json(['mensagem'=> $e->getMessage()],500);
                 }
