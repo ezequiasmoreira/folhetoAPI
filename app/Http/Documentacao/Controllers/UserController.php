@@ -34,5 +34,17 @@ final class UserController implements Documentacao {
             ];         
         return $retorno;
     }
+    public function atualizar(){
+        $retorno = [
+            'mensagem' => 'Recurso para atualizar o nome de um usuário".',
+            'verbo' => 'put',
+            'url' => 'http://localhost:8000/api/usuario/atualizar',
+            'json-esperado' => [
+                                "id"     => 25,
+                                "name"   => "teste",
+                            ],
+            ];         
+        return $retorno;
+    }
 }
 
