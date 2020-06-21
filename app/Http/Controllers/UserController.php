@@ -44,7 +44,7 @@
                         return response()->json(['mensagem'=> $exception->getMessage()],500);
                 }
                 DB::commit();
-                return response()->json(compact('user','token'),201);
+                return response()->json(compact('user','token'),200);
         }
         public function atualizar(Request $request)
         {

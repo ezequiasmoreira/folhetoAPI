@@ -5,25 +5,28 @@ use App\Http\Repository\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Enums\Perfil;
 use App\Http\Spec\UserSpec;
+use App\Http\Service\EmpresaService;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class UserService
 {
-    private $user;
+    private $empresaService;
     private $userRepository;
     public $userSpec;
-
     public function __construct()  {
-        $this->userSpec = new UserSpec();
-        $this->userRepository = new UserRepository();
+       $this->userSpec = new UserSpec();
+       $this->userRepository = new UserRepository();
     }
     public function obterUsuarioLogado(){
         $usuario = Auth::user();
+        $this->userSpec->validarUsuario($usuario);
         return $usuario;
     }
-    public function obterPorId($id){        
-        return $this->userRepository->obterPorId($id);
+    public function obterPorId($id){ 
+        $usuario = $this->userRepository->obterPorId($id); 
+        $this->userSpec->validarUsuario($usuario);      
+        return $usuario;
     }
     public function validarUsuario($usuario){        
         return $this->userSpec->validarUsuario($usuario);
@@ -65,6 +68,21 @@ class UserService
     }
     public function validarCamposObrigatorioAtualizar($request){
         $this->userSpec->validarCamposObrigatorioAtualizar($request); 
+        return true;
+    }
+    public function atualizarPerfilFuncionario($empresa,$usuario){
+        $this->empresaService = new EmpresaService();
+        $this->empresaService->validar($empresa);
+        $this->validarUsuario($usuario);
+        $this->validarEmpresaVinculadaUsuarioLogado($empresa,$usuario);
+        $perfilFuncionario = Perfil::getValue('Funcionario');
+        $usuario->perfil = $perfilFuncionario;
+        $salvou = $usuario->save();
+        $this->userSpec->validarStatus($salvou,true,'Não foi possível atualizar o perfil do usuário para FUNCIONARIO');
+        return true;
+    }
+    public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuario){
+        $this->userSpec->validarEmpresaVinculadaUsuarioLogado($empresa,$usuario);
         return true;
     }
 }

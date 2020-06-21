@@ -6,7 +6,8 @@ use App\Interesse;
 class InteresseRepository
 {
     public $interesseService;
-    public function __construct()  {      
+    public function __construct()  {
+        $this->interesseService = new InteresseService();    
     }
     public function obterPorUsuarioCodigo($usuarioId,$codigo){
         $this->interesseService = new InteresseService();

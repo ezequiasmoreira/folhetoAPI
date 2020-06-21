@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Service\EmpresaService;
@@ -16,14 +17,16 @@ class EmpresaController extends Controller
         $this->empresaService = new EmpresaService();
     }
     public function salvar(Request $request){
+        DB::beginTransaction();
         try {
-            $this->empresaService->validar($request);        
-            
-            $empresa = Empresa::create($request->all());
+            $this->empresaService->validarRequest($request);
+            $this->empresaService->salvar($request);       
         } catch (Exception $exception) {
+            DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
-        return response()->json($empresa,201);
+        DB::commit();
+        return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
     }
     public function salvarLogo(Request $request){
         $fileName= "empresa_".$request->indice.".jpg";

@@ -98,4 +98,10 @@ class UserSpec
         }
         return true;      
     }
+    public function validarStatus($enviado,$esperado,$mensagemDoErro){        
+        if($enviado != $esperado){
+            ApiException::lancarExcessao(16,$mensagemDoErro);
+        }
+        return true;      
+    }
 }

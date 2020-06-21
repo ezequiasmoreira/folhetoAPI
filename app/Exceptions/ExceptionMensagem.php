@@ -20,7 +20,7 @@ class ExceptionMensagem
             ['codigo'=> 2 ,'descricao'=> 'Quantidade de interesses ? é diferente da quantidade exigido ?.'],
             ['codigo'=> 3 ,'descricao'=> 'Informado mais de um usuário para atualizar os interesses'],
             ['codigo'=> 4 ,'descricao'=> 'O valor informado ? para status não é permitido, deve ser enviado ?.'],
-            ['codigo'=> 5 ,'descricao'=> '? inválido.'],
+            ['codigo'=> 5 ,'descricao'=> '? inválido(a).'],
             ['codigo'=> 6 ,'descricao'=> 'Código ? inválido, códigos permitido: ?.'],
             ['codigo'=> 7 ,'descricao'=> 'Não permitido. Usuário ? não possui permissão para alterar o usuário ?.'],
             ['codigo'=> 8 ,'descricao'=> 'Perfil ? inválido, perfis permitido: ?.'],
@@ -32,6 +32,7 @@ class ExceptionMensagem
             ['codigo'=> 14 ,'descricao'=> '? obrigatório.'],
             ['codigo'=> 15 ,'descricao'=> 'Quantidade de digitos incorreta para o campo ?. Quantidade correta ?.'],
             ['codigo'=> 16 ,'descricao'=> 'Campo ? inválido. Formato esperado: ?.'],
+            ['codigo'=> 16 ,'descricao'=> 'Erro duarante o processo. ?. Contate a equipe técnica'],
         ];
     }
 }

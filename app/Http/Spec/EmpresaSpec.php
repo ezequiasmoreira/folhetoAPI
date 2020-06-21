@@ -9,7 +9,7 @@ class EmpresaSpec
 {
     private $utilService;
     public function __construct()  {
-        $this->utilService = new UtilService();
+       $this->utilService = new UtilService();
     }
 
     public function validarCamposObrigatorioSalvar($request){        
@@ -21,7 +21,6 @@ class EmpresaSpec
             'rua' => 'required|string|max:255',
             'numero' => 'required|integer',
             'bairro'  => 'required|string|max:255',
-            'complemento'  => 'required|string|max:255',
             'cep'  => 'required|string|max:10',
             'cidade_id'  => 'required|integer',   
         ]);
@@ -45,6 +44,16 @@ class EmpresaSpec
         }
         $this->utilService->validarCnpj($request->cnpj);
         return true;              
+    }
+    public function validar($empresa){ 
+        $this->existeEmpresa($empresa);
+        return true;              
+    }
+    private function existeEmpresa($empresa){ 
+        if(!$empresa){
+            ApiException::lancarExcessao(5,'Empresa');
+        }
+        return true;    
     }
     
     
