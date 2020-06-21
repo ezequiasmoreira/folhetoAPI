@@ -27,6 +27,7 @@ class ExceptionMensagem
             ['codigo'=> 9 ,'descricao'=> 'Perfil ? inválido, para funcionário'],
             ['codigo'=> 10 ,'descricao'=> 'Usuário ? não está vinculado a empresa ?.'],
             ['codigo'=> 11 ,'descricao'=> '?'],
+            ['codigo'=> 12 ,'descricao'=> 'Usuário com perfil de funcionário somente ser criado/atualizado, ao criar uma empresa ou criar um usuário vinculado a uma empresa.'],
         ];
     }
 }

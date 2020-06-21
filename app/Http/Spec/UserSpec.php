@@ -52,6 +52,16 @@ class UserSpec
         } 
         return true;
     }
+    public function permitePerfilFuncionario($perfil,$permite){
+        $perfilFuncionario = Perfil::getValue('Funcionario');
+        if($perfil != $perfilFuncionario){
+            return true;
+        }
+        if(!$permite){
+            ApiException::lancarExcessao(12);
+        }
+        return true;
+    }
 
     public function validarPerfilPermitido($perfil,$perfisPermitido){
         $permitido = false;

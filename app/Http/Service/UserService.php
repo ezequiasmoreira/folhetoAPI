@@ -49,6 +49,7 @@ class UserService
         if ($request->get('perfil')){
             $perfisPermitido = $this->obterPerfisPermitido(); 
             $this->userSpec->validarPerfilPermitido($request->get('perfil'),$perfisPermitido); 
+            $this->userSpec->permitePerfilFuncionario($request->get('perfil'),false);
         }
         $user = User::create([
             'name' => $request->get('name'),
