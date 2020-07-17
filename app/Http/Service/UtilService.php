@@ -11,8 +11,8 @@ class UtilService
         $this->utilSpec->validarCnpj($cnpj);
         return true;      
     }
-    public function validarStatus($enviado,$esperado,$mensagemDoErro){ 
-        $this->utilSpec->validarStatus($enviado,$esperado,$mensagemDoErro);
+    public function validarStatus($enviado,$esperado,$codigoDaMensagem){ 
+        $this->utilSpec->validarStatus($enviado,$esperado,$codigoDaMensagem);
         return true;      
     }
     

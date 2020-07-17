@@ -36,7 +36,7 @@ class FuncionarioService
         $funcionario->empresa_id = $empresa->id;
         $funcionario->endereco_id = $endereco->id;
         $salvou = $funcionario->save();
-        $this->utilService->validarStatus($salvou,true,'Não foi possível salvar o funcionário');
+        $this->utilService->validarStatus($salvou,true,19);
         return true;
     }
     public function validar($endereco){

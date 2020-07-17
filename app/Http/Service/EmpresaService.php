@@ -55,9 +55,11 @@ class EmpresaService
         $this->usuarioService = new UserService();
         $this->enderecoService = new EnderecoService();
         $this->funcionarioService = new FuncionarioService();
+
         $endereco = $this->enderecoService->salvar($request);
         $this->enderecoService->validar($endereco);
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
+
         $empresa = new Empresa();
         $empresa->razao_social = $request->razao_social;
         $empresa->nome_fantasia = $request->nome_fantasia;
@@ -67,7 +69,8 @@ class EmpresaService
         $empresa->endereco_id = $endereco->id;
         $empresa->usuario_id = $usuarioLogado->id;
         $salvou = $empresa->save();
-        $this->utilService->validarStatus($salvou,true,"Não foi possivel salvar a empresa");
+
+        $this->utilService->validarStatus($salvou,true,18);
         $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);
         $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);
         return true;

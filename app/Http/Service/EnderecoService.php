@@ -8,11 +8,12 @@ class EnderecoService
 {
     private $enderecoSpec;
     private $cidadeService;
-    public function __construct()  {
-        $this->enderecoSpec = new EnderecoSpec();
-        $this->cidadeService = new CidadeService();
+    public function __construct()  {        
     }
     public function salvar($request){
+        $this->enderecoSpec = new EnderecoSpec();
+        $this->cidadeService = new CidadeService();
+
         $this->enderecoSpec->validarCamposObrigatorioSalvar($request);
         $cidade = $this->cidadeService->obterPorId($request->cidade_id);
         $endereco = new Endereco();
@@ -26,6 +27,7 @@ class EnderecoService
         return $endereco;
     }
     public function validar($endereco){
+        $this->enderecoSpec = new EnderecoSpec();
         $this->enderecoSpec->validar($endereco);
         return true;
     }

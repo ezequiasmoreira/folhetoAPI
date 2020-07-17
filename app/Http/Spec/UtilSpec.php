@@ -64,9 +64,9 @@ class UtilSpec
         $resto = $soma % 11;
         return $cnpj[13] == ($resto < 2 ? 0 : 11 - $resto);
     }
-    public function validarStatus($enviado,$esperado,$mensagemDoErro){        
+    public function validarStatus($enviado,$esperado,$codigoDaMensagem){        
         if($enviado != $esperado){
-            ApiException::lancarExcessao(16,$mensagemDoErro);
+            ApiException::lancarExcessao(codigoDaMensagem);
         }
         return true;      
     }

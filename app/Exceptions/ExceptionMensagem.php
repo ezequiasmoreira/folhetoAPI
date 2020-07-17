@@ -32,8 +32,9 @@ class ExceptionMensagem
             ['codigo'=> 14 ,'descricao'=> '? obrigatório.'],
             ['codigo'=> 15 ,'descricao'=> 'Quantidade de digitos incorreta para o campo ?. Quantidade correta ?.'],
             ['codigo'=> 16 ,'descricao'=> 'Campo ? inválido. Formato esperado: ?.'],
-            ['codigo'=> 16 ,'descricao'=> 'Erro duarante o processo. ?. Contate a equipe técnica'],
             ['codigo'=> 17 ,'descricao'=> 'Usuário não possui permissão para salvar funcionário'],
+            ['codigo'=> 18 ,'descricao'=> 'Não foi possível salvar a empresa'],
+            ['codigo'=> 18 ,'descricao'=> 'Não foi possível salvar o funcionário'],
         ];
     }
 }
