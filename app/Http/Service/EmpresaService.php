@@ -2,6 +2,7 @@
 namespace App\Http\Service;
 use Illuminate\Support\Facades\Auth;
 use App\Empresa;
+use App\Http\Repository\EmpresaRepository;
 use App\Http\Spec\EmpresaSpec;
 use App\Http\Service\EnderecoService;
 use App\Http\Service\FuncionarioService;
@@ -12,23 +13,28 @@ class EmpresaService
     private $enderecoService;
     private $usuarioService;
     private $funcionarioService;
+    private $empresaRepository;
     private $utilService;
     private $empresaSpec;
     public function __construct()  {
         $this->empresaSpec = new EmpresaSpec();
+        $this->empresaRepository = new EmpresaRepository();
     }
-    public function obterEmpresaUsuarioLogado(){
-        $usuario = Auth::user();
-        if ($usuario->perfil == 'FUNCIONARIO'){
-            $funcionario = Funcionario::where('usuario_id',$usuario->id)->get('*');
-            $empresa = $this->getEmpresa($funcionario->empresa_id);
-            return $empresa;            
-        }        
-        $empresa = Empresa::where('usuario_id',$usuario->id)->first();
-        return $empresa;
+    public function obterEmpresaPorUsuario($usuario){   
+        $this->funcionarioService = new FuncionarioService();     
+        $empresa = $this->empresaRepository->obterEmpresaPorUsuario($usuario);
+        if($empresa){
+            return $empresa;
+        }
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario);
+        if(!$funcionario){
+            return false;
+        }
+        $empresa = $this->obterPorId($funcionario->empresa_id);
+        return $empresa; 
     }
     public function validarRequest($request){
-         $this->empresaSpec = new EmpresaSpec();
+        $this->empresaSpec = new EmpresaSpec();
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
         $this->empresaSpec->validarTipo($request->tipo);
         $this->empresaSpec->validarTipoJuridica($request);           
@@ -38,6 +44,11 @@ class EmpresaService
         $this->empresaSpec = new EmpresaSpec();
         $this->empresaSpec->validar($empresa);       
         return true;
+    }
+    public function obterPorId($id){
+        $empresa = $this->empresaRepository->obterPorId($id);
+        $this->empresaSpec->validar($empresa);       
+        return $empresa;
     }
     public function salvar($request){
         $this->utilService = new UtilService();

@@ -4,9 +4,14 @@ use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Service\EmpresaService;
 use App\Enums\Perfil;
+use App\Http\Service\FuncionarioService;
+use App\Http\Service\UserService;
 
 class UserSpec
 {
+    private $empresaService;
+    private $usuarioService;
+    private $funcionarioService;
     public function __construct()  {
     }
     
@@ -30,11 +35,23 @@ class UserSpec
             ApiException::lancarExcessao(7,'('.$usuarioLogado->name.'),('.$usuario->name.')');
         }
     }
-    public function validarVinculoFuncionario($usuario,$usuarioLogado){
-        $empresaService = new EmpresaService();
-        $empresa = $empresaService->obterEmpresaUsuarioLogado();
-        
-        
+    public function usuarioLogadoPossuiEmpresa(){
+        $this->usuarioService = new UserService();
+        $this->empresaService = new EmpresaService();
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
+        $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);
+        if($empresa){
+            return true;
+        }
+        return false;        
+    }
+    public function usuarioPossuiEmpresa($usuario){
+        $this->empresaService = new EmpresaService();
+        $empresa = $this->empresaService->obterEmpresaPorUsuario($usuario);
+        if($empresa){
+            return true;
+        }
+        return false;        
     }
     public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuarioLogado){
         if($empresa->usuario_id != $usuarioLogado->id){
@@ -52,12 +69,35 @@ class UserSpec
         } 
         return true;
     }
+    public function permiteSalvarFuncionario($usuario){
+        $this->funcionarioService = new FuncionarioService();
+        $this->empresaService = new EmpresaService();
+        if(!$this->ehFuncionario($usuario)){
+            return false;
+        }
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario); 
+        $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
+        if($empresa->usuario_id != $usuario->id){
+            return false;
+        }   
+        return true;
+    }
+    private function ehFuncionario($usuario){
+        $perfilFuncionario = Perfil::getValue('Funcionario');
+        if (!($usuario->perfil == $perfilFuncionario)){
+            return false;
+        } 
+        if(!$this->usuarioPossuiEmpresa($usuario)){
+            return false;
+        }
+        return true;
+    }
     public function permitePerfilFuncionario($perfil,$permite){
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if($perfil != $perfilFuncionario){
             return true;
         }
-        if(!$permite){
+        if(!$permite){            
             ApiException::lancarExcessao(12);
         }
         return true;

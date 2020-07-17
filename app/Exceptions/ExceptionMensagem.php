@@ -33,6 +33,7 @@ class ExceptionMensagem
             ['codigo'=> 15 ,'descricao'=> 'Quantidade de digitos incorreta para o campo ?. Quantidade correta ?.'],
             ['codigo'=> 16 ,'descricao'=> 'Campo ? inválido. Formato esperado: ?.'],
             ['codigo'=> 16 ,'descricao'=> 'Erro duarante o processo. ?. Contate a equipe técnica'],
+            ['codigo'=> 17 ,'descricao'=> 'Usuário não possui permissão para salvar funcionário'],
         ];
     }
 }

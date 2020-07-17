@@ -31,6 +31,9 @@ class UserService
     public function validarUsuario($usuario){        
         return $this->userSpec->validarUsuario($usuario);
     }
+    public function permiteSalvarFuncionario($usuario){        
+        return $this->userSpec->permiteSalvarFuncionario($usuario);
+    }
     public function atualizar($request){   
         $usuario = $this->obterPorId($request->id);
         $usuarioLogado = $this->obterUsuarioLogado();  
@@ -85,4 +88,8 @@ class UserService
         $this->userSpec->validarEmpresaVinculadaUsuarioLogado($empresa,$usuario);
         return true;
     }
+    public function usuarioLogadoPossuiEmpresa(){
+        return $this->userSpec->usuarioLogadoPossuiEmpresa();
+    }
+     
 }
