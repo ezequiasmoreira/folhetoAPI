@@ -4,9 +4,11 @@ use App\Enums\Tipo;
 use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Service\UtilService;
+use App\Http\Service\UserService;
 
 class EmpresaSpec
 {
+    private $usuarioService;
     private $utilService;
     public function __construct()  {
        $this->utilService = new UtilService();
@@ -47,6 +49,13 @@ class EmpresaSpec
     }
     public function validar($empresa){ 
         $this->existeEmpresa($empresa);
+        return true;              
+    }
+    public function validarRegraParaCriarEmpresa(){  
+        $this->usuarioService = new UserService();       
+        (boolean)$possuiEmpresa  = $this->usuarioService->usuarioLogadoPossuiEmpresa();
+        $usuario =  $this->usuarioService->obterUsuarioLogado(); 
+        $this->utilService->validarStatus($possuiEmpresa,true,20,$usuario->name);
         return true;              
     }
     private function existeEmpresa($empresa){ 

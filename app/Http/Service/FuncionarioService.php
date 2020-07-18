@@ -44,6 +44,8 @@ class FuncionarioService
         return true;
     }
     public function obterFuncionarioPorUsuario($usuario){
-        return $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
+        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
+        $this->funcionarioSpec->validar($funcionario);
+        return $funcionario;
     }
 }

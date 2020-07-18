@@ -34,7 +34,8 @@ class ExceptionMensagem
             ['codigo'=> 16 ,'descricao'=> 'Campo ? inválido. Formato esperado: ?.'],
             ['codigo'=> 17 ,'descricao'=> 'Usuário não possui permissão para salvar funcionário'],
             ['codigo'=> 18 ,'descricao'=> 'Não foi possível salvar a empresa'],
-            ['codigo'=> 18 ,'descricao'=> 'Não foi possível salvar o funcionário'],
+            ['codigo'=> 19 ,'descricao'=> 'Não foi possível salvar o funcionário'],
+            ['codigo'=> 20 ,'descricao'=> 'Usuário ? já esta vinculado a uma empresa'],
         ];
     }
 }

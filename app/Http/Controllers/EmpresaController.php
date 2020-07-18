@@ -19,7 +19,7 @@ class EmpresaController extends Controller
     public function salvar(Request $request){
         DB::beginTransaction();
         try {
-            $this->empresaService->validarRequest($request);
+            $this->empresaService->validarRequisicao($request);
             $this->empresaService->salvar($request);       
         } catch (Exception $exception) {
             DB::rollBack();

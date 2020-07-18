@@ -33,11 +33,15 @@ class EmpresaService
         $empresa = $this->obterPorId($funcionario->empresa_id);
         return $empresa; 
     }
-    public function validarRequest($request){
+    public function validarRequisicao($request){
         $this->empresaSpec = new EmpresaSpec();
+        $this->usuarioService = new UserService();       
+        
+        $this->empresaSpec->validarRegraParaCriarEmpresa();
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
         $this->empresaSpec->validarTipo($request->tipo);
-        $this->empresaSpec->validarTipoJuridica($request);           
+        $this->empresaSpec->validarTipoJuridica($request); 
+
         return true;
     }
     public function validar($empresa){
@@ -69,7 +73,7 @@ class EmpresaService
         $empresa->endereco_id = $endereco->id;
         $empresa->usuario_id = $usuarioLogado->id;
         $salvou = $empresa->save();
-
+        
         $this->utilService->validarStatus($salvou,true,18);
         $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);
         $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);
