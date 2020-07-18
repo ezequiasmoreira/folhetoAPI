@@ -36,6 +36,7 @@ class ExceptionMensagem
             ['codigo'=> 18 ,'descricao'=> 'Não foi possível salvar a empresa'],
             ['codigo'=> 19 ,'descricao'=> 'Não foi possível salvar o funcionário'],
             ['codigo'=> 20 ,'descricao'=> 'Usuário ? já esta vinculado a uma empresa'],
+            ['codigo'=> 21 ,'descricao'=> 'Não foi possível atualizar o perfil do usuário para FUNCIONARIO'],
         ];
     }
 }

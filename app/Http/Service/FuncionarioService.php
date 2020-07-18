@@ -43,9 +43,9 @@ class FuncionarioService
         $this->enderecoSpec->validar($endereco);
         return true;
     }
-    public function obterFuncionarioPorUsuario($usuario){
-        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
-        $this->funcionarioSpec->validar($funcionario);
+    public function obterFuncionarioPorUsuario($usuario,$validaRetorno){
+        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario,false);
+        if ($validaRetorno) $this->funcionarioSpec->validar($funcionario);
         return $funcionario;
     }
 }

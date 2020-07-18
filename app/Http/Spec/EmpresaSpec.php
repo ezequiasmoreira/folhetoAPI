@@ -55,7 +55,7 @@ class EmpresaSpec
         $this->usuarioService = new UserService();       
         (boolean)$possuiEmpresa  = $this->usuarioService->usuarioLogadoPossuiEmpresa();
         $usuario =  $this->usuarioService->obterUsuarioLogado(); 
-        $this->utilService->validarStatus($possuiEmpresa,true,20,$usuario->name);
+        $this->utilService->validarStatus($possuiEmpresa,false,20,$usuario->name);
         return true;              
     }
     private function existeEmpresa($empresa){ 

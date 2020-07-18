@@ -8,6 +8,7 @@ use App\Http\Spec\UserSpec;
 use App\Http\Service\EmpresaService;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Exceptions\ApiException;
 
 class UserService
 {
@@ -81,7 +82,7 @@ class UserService
         $perfilFuncionario = Perfil::getValue('Funcionario');
         $usuario->perfil = $perfilFuncionario;
         $salvou = $usuario->save();
-        $this->userSpec->validarStatus($salvou,true,'Não foi possível atualizar o perfil do usuário para FUNCIONARIO');
+        $this->userSpec->validarStatus($salvou,true,21);
         return true;
     }
     public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuario){

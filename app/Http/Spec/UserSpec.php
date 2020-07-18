@@ -35,16 +35,15 @@ class UserSpec
             ApiException::lancarExcessao(7,'('.$usuarioLogado->name.'),('.$usuario->name.')');
         }
     }
+    
     public function usuarioLogadoPossuiEmpresa(){
         $this->usuarioService = new UserService();
         $this->empresaService = new EmpresaService();
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
-        $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);
-        if($empresa){
-            return true;
-        }
-        return false;        
+        $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);       
+        return  ($empresa)?true:false;               
     }
+
     public function usuarioPossuiEmpresa($usuario){
         $this->empresaService = new EmpresaService();
         $empresa = $this->empresaService->obterEmpresaPorUsuario($usuario);
@@ -75,7 +74,10 @@ class UserSpec
         if(!$this->ehFuncionario($usuario)){
             return false;
         }
-        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario); 
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario,false);  
+        if(!$funcionario){
+            return true;
+        } 
         $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
         if($empresa->usuario_id != $usuario->id){
             return false;
@@ -138,9 +140,9 @@ class UserSpec
         }
         return true;      
     }
-    public function validarStatus($enviado,$esperado,$mensagemDoErro){        
+    public function validarStatus($enviado,$esperado,$mensagemDoErro,$parametros=null){        
         if($enviado != $esperado){
-            ApiException::lancarExcessao(16,$mensagemDoErro);
+            ApiException::lancarExcessao(16,$mensagemDoErro,$parametros);
         }
         return true;      
     }

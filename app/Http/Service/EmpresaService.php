@@ -26,7 +26,7 @@ class EmpresaService
         if($empresa){
             return $empresa;
         }
-        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario);
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario,false);
         if(!$funcionario){
             return false;
         }
@@ -41,7 +41,6 @@ class EmpresaService
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
         $this->empresaSpec->validarTipo($request->tipo);
         $this->empresaSpec->validarTipoJuridica($request); 
-
         return true;
     }
     public function validar($empresa){
@@ -74,9 +73,9 @@ class EmpresaService
         $empresa->usuario_id = $usuarioLogado->id;
         $salvou = $empresa->save();
         
-        $this->utilService->validarStatus($salvou,true,18);
-        $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);
-        $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);
+        $this->utilService->validarStatus($salvou,true,18);  
+        $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);      
+        $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);        
         return true;
     }
 }
