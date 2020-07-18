@@ -16,11 +16,11 @@ class InteresseService
     public $interreseSpec;
     public $interesseRepository;
     public function __construct()  {
-        $this->usuarioService = new UserService();
         $this->interreseSpec = new InteresseSpec();
         $this->interesseRepository = new InteresseRepository();
     }
     public function salvar (User $usuario){  
+        $this->usuarioService = new UserService();
         $this->usuarioService->validarUsuario($usuario);              
         $interesse = Interesse::where('usuario_id',$usuario->id)->first();
         if($interesse){
@@ -38,27 +38,28 @@ class InteresseService
         return true;
     }
     public function interessePermiteAtualizar (Request $request){  
-            $tipoInteresses = TipoInteresse::getValues();            
-            $interessesAtualizar = $request->toArray();   
-            $quantidadeRegistro = count($interessesAtualizar);
-            $quantidadeRegistroExigido = count($tipoInteresses);
+        $this->usuarioService = new UserService();
+        $tipoInteresses = TipoInteresse::getValues();            
+        $interessesAtualizar = $request->toArray();   
+        $quantidadeRegistro = count($interessesAtualizar);
+        $quantidadeRegistroExigido = count($tipoInteresses);
 
-            $argumentos =[
-                'quantidadeRegistro' => $quantidadeRegistro,
-                'quantidadeRegistroExigido' => $quantidadeRegistroExigido
-            ];
-            $this->interreseSpec->validarQuantidadePermitido($argumentos);
+        $argumentos =[
+            'quantidadeRegistro' => $quantidadeRegistro,
+            'quantidadeRegistroExigido' => $quantidadeRegistroExigido
+        ];
+        $this->interreseSpec->validarQuantidadePermitido($argumentos);
 
-            $primeiroUsuario =0;     
-            $incremento = 0;               
-            foreach ($interessesAtualizar as $interesseAtualizar) {                                             
-                $this->interreseSpec->validarStatusPermitido($interesseAtualizar['status']); 
-                $usuario = $this->usuarioService->obterPorId($interesseAtualizar['usuario']); 
-                $primeiroUsuario  = !$incremento ? $usuario->id : $primeiroUsuario; 
-                $this->interreseSpec->validarUsuarioPermitido($primeiroUsuario,$usuario);       
-                $this->interreseSpec->validarCodigoPermitido($tipoInteresses,$interesseAtualizar['codigo']);  
-                $incremento++;              
-            }
+        $primeiroUsuario =0;     
+        $incremento = 0;               
+        foreach ($interessesAtualizar as $interesseAtualizar) {                                             
+            $this->interreseSpec->validarStatusPermitido($interesseAtualizar['status']); 
+            $usuario = $this->usuarioService->obterPorId($interesseAtualizar['usuario']); 
+            $primeiroUsuario  = !$incremento ? $usuario->id : $primeiroUsuario; 
+            $this->interreseSpec->validarUsuarioPermitido($primeiroUsuario,$usuario);       
+            $this->interreseSpec->validarCodigoPermitido($tipoInteresses,$interesseAtualizar['codigo']);  
+            $incremento++;              
+        }
         return true;
     }
     public function atualizar (Request $request){  
@@ -68,6 +69,7 @@ class InteresseService
             $codigo = $interesseAtualizar['codigo'];                                       
             $status = $interesseAtualizar['status'];                                       
             $interesse = $this->interesseRepository->obterPorUsuarioCodigo($usuarioId,$codigo);
+            $this->interesseService->validarInteresse($interesse);
             $interesse->status = $status;
             $interesse->Save();
         }                   
