@@ -5,6 +5,7 @@ use App\Empresa;
 use App\Endereco;
 use App\User;
 use App\Http\Service\EmpresaService;
+use App\Http\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -58,15 +59,17 @@ class FuncionarioController extends Controller
             'perfil' => 'FUNCIONARIO',
             'endereco_id' => $endereco->id,
         ]);
-        $empresa = new EmpresaService();
-        $empresa = $empresa->obterEmpresaUsuarioLogado();
+        $usuarioService = new UserService();
+        $empresaService = new EmpresaService();
+        $usuarioLogado =  $usuarioService->obterUsuarioLogado();
+        $empresa = $empresaService->obterEmpresaPorUsuario($usuarioLogado);
         
         $funcionario = Funcionario::create([
             'usuario_id' => $user->id,
             'endereco_id' => $endereco->id,
             'empresa_id' => $empresa->id,
         ]);        
-        return response()->json($funcionario,201);
+        return response()->json($funcionario,200);
     }
 
     public function excluir($id) {
