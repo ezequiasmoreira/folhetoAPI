@@ -29,12 +29,19 @@ class EmpresaController extends Controller
         return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
     }
     public function salvarLogo(Request $request){
-        $fileName= "empresa_".$request->indice.".jpg";
-        $path = $request->file('photo')->move(public_path("/empresa/"),$fileName);
-        $photoUrl = url('/empresa/'.$fileName);
-        $empresa = $this->getEmpresa($request->indice);
-        $empresa->logo =  $photoUrl;
-        $empresa->save();
+        DB::beginTransaction();
+        try {
+            $fileName= "empresa_".$request->empresaId.".jpg";
+            $path = $request->file('photo')->move(public_path("/empresa/"),$fileName);
+            $photoUrl = url('/empresa/'.$fileName);
+            $empresa = $this->empresaService->obterPorId($request->empresaId);
+            $empresa->logo =  $photoUrl;
+            $empresa->save();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }
+        DB::commit();
         return response()->json(['url' =>  $photoUrl],200);
     }
     public function atualizar(Request $request){

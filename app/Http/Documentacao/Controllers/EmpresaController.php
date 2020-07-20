@@ -21,7 +21,7 @@ final class EmpresaController implements Documentacao {
                 "rua"           =>"São bernado",
                 "numero"        =>150,
                  "bairro"       =>"Centro",
-                "complemento"   =>"Proxximo a esucri",
+                "complemento"   =>"Quadra 6",
                 "cep"           =>"88852-536",
                 "cidade_id"     =>2                    
                 ]                            
