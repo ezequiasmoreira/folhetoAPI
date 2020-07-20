@@ -28,6 +28,19 @@ final class EmpresaController implements Documentacao {
             ];        
         return $retorno;
     }
+    public function salvarLogo(){
+        $retorno = [
+            'mensagem' => 'Salva uma logo com o nome (empresa) com o nome id da empresa.',
+            'verbo' => 'post',
+            'url' => 'http://localhost:8000/api/empresa/logo',
+            'parametros da requisição' => [
+                "photo"                 =>"arquivo da imagem",
+                "empresaId"             =>"id da empresa",
+                "tipo de requisição"    =>"form-data"                   
+                ]                            
+            ];        
+        return $retorno;
+    }
     
 }
 
