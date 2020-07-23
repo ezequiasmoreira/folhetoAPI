@@ -41,6 +41,28 @@ final class EmpresaController implements Documentacao {
             ];        
         return $retorno;
     }
+    public function atualizar(){
+        $retorno = [
+            'mensagem' => 'Atualiza a empresa, é obrigatório informar o id no corpo da requisição.',
+            'verbo' => 'put',
+            'url' => 'http://localhost:8000/api/empresa/atualizar',
+            'json-esperado' => [
+                "id"            =>2,
+                "razao_social"  =>"Folheto Virtual LTDA",
+                "nome_fantasia" =>"Folheto Virtual",
+                "cpf"           =>"101.986.897-44",
+                "cnpj"          =>"59.485.038/0001-44",
+                "tipo"          =>"JURIDICA",
+                "rua"           =>"São bernado",
+                "numero"        =>150,
+                 "bairro"       =>"Centro",
+                "complemento"   =>"Quadra 6",
+                "cep"           =>"88852-536",
+                "cidade_id"     =>2                    
+                ]                            
+            ];              
+        return $retorno;
+    }
     
 }
 

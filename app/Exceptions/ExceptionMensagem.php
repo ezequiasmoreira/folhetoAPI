@@ -37,6 +37,9 @@ class ExceptionMensagem
             ['codigo'=> 19 ,'descricao'=> 'Não foi possível salvar o funcionário'],
             ['codigo'=> 20 ,'descricao'=> 'Usuário ? já esta vinculado a uma empresa'],
             ['codigo'=> 21 ,'descricao'=> 'Não foi possível atualizar o perfil do usuário para FUNCIONARIO'],
+            ['codigo'=> 22 ,'descricao'=> 'Não informado ID da empresa para atualizar'],
+            ['codigo'=> 23 ,'descricao'=> 'Não Permitido, usuário não possui empresa vinculada'],
+            ['codigo'=> 24 ,'descricao'=> 'Não Permitido, empresa deve ser atualizada pelo proprietário'],
         ];
     }
 }

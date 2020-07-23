@@ -45,52 +45,16 @@ class EmpresaController extends Controller
         return response()->json(['url' =>  $photoUrl],200);
     }
     public function atualizar(Request $request){
-        if (!$request->id){
-            return response()->json(['mensagem' =>'Não informado a empresa para atualizar'],500);
+        DB::beginTransaction();
+        try {
+            $this->empresaService->validarRequisicaoAtualizar($request);
+            $this->empresaService->atualizar($request);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
-        $empresaUsuarioLogado = $this->obterEmpresaUsuarioLogado();
-        if(!$empresaUsuarioLogado){
-            return response()->json(['mensagem' =>'Não Permitido, usuário não possui empresa vinculada'],500);
-        }
-        if($request->id != $empresaUsuarioLogado->id){
-            return response()->json(['mensagem' =>'Não Permitido, usuário não possui permissão para alterar a empresa'],500);
-        }
-        if($this->getEmpresa($request->id)->cpf != $request->cpf){
-            $validator = Validator::make($request->all(), [
-                'razao_social' => 'required|string|max:255',
-                'nome_fantasia' => 'required|string|max:255',
-                'cpf' => 'required|string|max:14|min:14|unique:empresas',
-                'tipo' => 'required|string',
-            ]);
-        }else{
-            $validator = Validator::make($request->all(), [
-                'razao_social' => 'required|string|max:255',
-                'nome_fantasia' => 'required|string|max:255',
-                'cpf' => 'required|string|max:14|min:14',
-                'tipo' => 'required|string',
-            ]);
-
-        }
-       
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        
-        $request->tipo = strtoupper($request->tipo);
-        if(($request->tipo != "JURIDICA")&&($request->tipo != "FISICA")){
-            return response()->json(['mensagem'=>'TIPO inválido'],500);
-        }
-        if(($request->tipo == "JURIDICA") && (!$request->cnpj)){
-            return response()->json(['mensagem'=>'CNPJ não informado para pessoa jurídica'],500);
-        }
-        $empresa = $this->getEmpresa($request->id);
-        $usuario = Auth::user();
-        if($request->usuario_id != $usuario->id){
-            return response()->json(['mensagem'=>'Não é possivel alterar o usuário vinculado a empresa'],500);
-        }
-        $empresa->update($request->all());
-        return response()->json($empresa,200);
+        DB::commit();    
+        return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
     public function excluir($id) {
         $this->getEmpresa($id)->delete();

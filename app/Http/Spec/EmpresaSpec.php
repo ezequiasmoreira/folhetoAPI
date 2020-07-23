@@ -5,10 +5,12 @@ use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Service\UtilService;
 use App\Http\Service\UserService;
+use App\Http\Service\EmpresaService;
 
 class EmpresaSpec
 {
     private $usuarioService;
+    private $empresaService;
     private $utilService;
     public function __construct()  {
        $this->utilService = new UtilService();
@@ -29,6 +31,45 @@ class EmpresaSpec
         if($validator->fails()){
             ApiException::lancarExcessao(11,$validator->errors()->toJson());
         }
+        return true;      
+    }
+    public function validarCamposObrigatorioAtualizar($request){  
+        $empresaService = new EmpresaService();
+        if(!$request->id) ApiException::lancarExcessao(22);        
+        if(!$request->cpf) ApiException::lancarExcessao(14,'Cpf');
+        $empresa = $empresaService->obterPorId($request->id);
+        $cpfUnico = ($empresa->cpf != $request->cpf);
+               
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'razao_social' => 'required|string|max:255',
+            'nome_fantasia' => 'required|string|max:255',
+            'cpf' => 'required|string|max:14|min:14|'.($cpfUnico ? '|unique:empresas':''),
+            'tipo' => 'required|string',
+            'rua' => 'required|string|max:255',
+            'numero' => 'required|integer',
+            'bairro'  => 'required|string|max:255',
+            'cep'  => 'required|string|max:10',
+            'cidade_id'  => 'required|integer',   
+        ]);
+        if($validator->fails()){
+            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+        }
+        return true;      
+    }
+    public function validarVinculoEmpresaPorUsuario($usuario){  
+        $this->empresaService = new EmpresaService();
+        $empresaUsuarioLogado = $this->empresaService->obterEmpresaPorUsuario($usuario);
+        (!$empresaUsuarioLogado) ? ApiException::lancarExcessao(23) : true;         
+        return true;      
+    }
+    public function permiteAlterarUsuario($empresa){ 
+        $this->empresaService = new EmpresaService();
+        $this->usuarioService = new UserService();       
+        $usuario =  $this->usuarioService->obterUsuarioLogado();  
+        if($empresa->usuario_id != $usuario->id){
+            ApiException::lancarExcessao(24);
+        }         
         return true;      
     }
     public function validarTipo($tipo){ 

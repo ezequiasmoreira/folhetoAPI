@@ -33,12 +33,25 @@ class EmpresaService
         $empresa = $this->obterPorId($funcionario->empresa_id);
         return $empresa; 
     }
+    public function validarRequisicaoAtualizar($request){
+        $this->empresaSpec = new EmpresaSpec();
+        $this->usuarioService = new UserService();       
+        
+        $this->empresaSpec->validarCamposObrigatorioAtualizar($request); 
+        $usuario = $this->usuarioService->obterUsuarioLogado();
+        $this->empresaSpec->validarVinculoEmpresaPorUsuario($usuario);
+        $empresa = $this->obterPorId($request->id);   
+        $this->empresaSpec->permiteAlterarUsuario($empresa);
+        $this->empresaSpec->validarTipo($request->tipo);
+        $this->empresaSpec->validarTipoJuridica($request); 
+        return true;
+    }
     public function validarRequisicao($request){
         $this->empresaSpec = new EmpresaSpec();
         $this->usuarioService = new UserService();       
         
-        $this->empresaSpec->validarRegraParaCriarEmpresa();
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
+        $this->empresaSpec->validarRegraParaCriarEmpresa();        
         $this->empresaSpec->validarTipo($request->tipo);
         $this->empresaSpec->validarTipoJuridica($request); 
         return true;
@@ -76,6 +89,11 @@ class EmpresaService
         $this->utilService->validarStatus($salvou,true,18);  
         $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);      
         $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);        
+        return true;
+    }
+    public function atualizar($request){ 
+        $empresa = $this->obterPorId($request->id);
+        $empresa->update($request->all());     
         return true;
     }
 }
