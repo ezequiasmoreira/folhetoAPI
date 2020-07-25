@@ -21,7 +21,12 @@ class FuncionarioService
         $this->funcionarioSpec = new FuncionarioSpec();
     }
     public function validarRequisicaoSalvar($request){
-        $this->funcionarioSpec->validarCamposObrigatorio($request);
+        $this->funcionarioSpec->validarCamposObrigatorioSalvar($request);
+        return true;
+    }
+    public function validarRequisicaoAtualizar($request){
+        
+        $this->funcionarioSpec->validarCamposObrigatorioAtualizar($request);
         return true;
     }
     public function salvar($usuario,$empresa,$endereco){
