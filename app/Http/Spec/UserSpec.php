@@ -69,20 +69,22 @@ class UserSpec
         return true;
     }
     public function permiteSalvarFuncionario($usuario){
+        $this->usuarioService = new UserService();
         $this->funcionarioService = new FuncionarioService();
         $this->empresaService = new EmpresaService();
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
         if(!$this->ehFuncionario($usuario)){
             return false;
         }
         if(!$this->usuarioLogadoPossuiEmpresa()){
             return false;
         }
-        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario,false);  
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuarioLogado,false);  
         if(!$funcionario){
-            return true;
+            return false;
         } 
         $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
-        if($empresa->usuario_id != $usuario->id){
+        if($empresa->usuario_id != $usuarioLogado->id){
             return false;
         }   
         return true;

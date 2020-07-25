@@ -40,6 +40,9 @@ class FuncionarioController extends Controller
         DB::commit();    
         return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
     }
+    public function atualizar(Request $request) {
+        return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
+    }
 
     public function excluir($id) {
         $empresa = new EmpresaService();
