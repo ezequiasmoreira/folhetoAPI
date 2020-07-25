@@ -41,6 +41,12 @@ class FuncionarioController extends Controller
         return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
     }
     public function atualizar(Request $request) {
+        try {
+            $this->funcionarioService->validarRequisicaoAtualizar($request);
+            $this->funcionarioService->atualizar($request);
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }
         return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
 

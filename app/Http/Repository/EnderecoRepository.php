@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Repository;
-use App\User;
+use App\Endereco;
 
-class UserRepository
+class EnderecoRepository
 {
     public $userService;
     public function __construct()  {    
     }
     public function obterPorId($id){
-        $usuario = User::where('id',$id)->first();
-        return $usuario;
+        $endereco = Endereco::where('id',$id)->first();
+        return $endereco;
     }
    
 }

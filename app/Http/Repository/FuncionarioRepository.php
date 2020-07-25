@@ -11,5 +11,8 @@ class FuncionarioRepository
     public function obterFuncionarioPorUsuario($usuario){
         return  Funcionario::where('usuario_id',$usuario->id)->first();
     }
+    public function obterPorId($funcionarioId){
+        return  Funcionario::where('id',$funcionarioId)->first();
+    }
    
 }

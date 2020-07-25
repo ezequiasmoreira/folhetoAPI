@@ -1,17 +1,20 @@
 <?php
 namespace App\Http\Service;
+use App\Endereco;
 use App\Http\Spec\EnderecoSpec;
 use App\Http\Service\CidadeService;
-use App\Endereco;
+use App\Http\Repository\EnderecoRepository;
 
 class EnderecoService
 {
     private $enderecoSpec;
+    private $enderecoRepository;
     private $cidadeService;
-    public function __construct()  {        
+    public function __construct()  {  
+        $this->enderecoSpec = new EnderecoSpec();
+        $this->enderecoRepository = new EnderecoRepository();
     }
     public function salvar($request){
-        $this->enderecoSpec = new EnderecoSpec();
         $this->cidadeService = new CidadeService();
 
         $this->enderecoSpec->validarCamposObrigatorioSalvar($request);
@@ -26,9 +29,13 @@ class EnderecoService
         $endereco->save();
         return $endereco;
     }
-    public function validar($endereco){
-        $this->enderecoSpec = new EnderecoSpec();
+    public function validar($endereco){        
         $this->enderecoSpec->validar($endereco);
         return true;
+    }
+    public function obterPorId($enderecoId){
+        $endereco = $this->enderecoRepository->obterPorId($enderecoId);
+        $this->enderecoSpec->validar($endereco);
+        return $endereco;
     }
 }
