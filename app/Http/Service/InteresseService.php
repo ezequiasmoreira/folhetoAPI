@@ -24,7 +24,7 @@ class InteresseService
         $this->usuarioService->validarUsuario($usuario);              
         $interesse = Interesse::where('usuario_id',$usuario->id)->first();
         if($interesse){
-            ApiException::lancarExcessao(1);            
+            ApiException::throwException(1);            
         }
         $enums = TipoInteresse::getValues();
         foreach ($enums as $enun) {

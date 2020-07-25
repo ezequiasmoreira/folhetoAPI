@@ -16,7 +16,7 @@ class EnderecoSpec
             'cidade_id' => 'required',
         ]);
         if($validator->fails()){
-            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+            ApiException::throwException(11,$validator->errors()->toJson());
         }
         return true;    
     }
@@ -26,7 +26,7 @@ class EnderecoSpec
     }
     private function existeEndereco($endereco){ 
         if(!$endereco){
-            ApiException::lancarExcessao(5,'Endereço');
+            ApiException::throwException(5,'Endereço');
         }
         return true;    
     }

@@ -11,7 +11,7 @@ class CidadeSpec
     }
     private function existeCidade($cidade){ 
         if(!$cidade){
-            ApiException::lancarExcessao(5,'Cidade');
+            ApiException::throwException(5,'Cidade');
         }
         return true;    
     }

@@ -7,7 +7,7 @@ use App\Exceptions\ExceptionMensagem;
 
 class ApiException extends Exception
 {
-    public static function lancarExcessao($mensagemCodigo,$codigos=''){
+    public static function throwException($mensagemCodigo,$codigos=''){
         $mensagem = ExceptionMensagem::obterMensagem($mensagemCodigo);
         $cont = (Integer) 0;
         $retorno = (String) '';

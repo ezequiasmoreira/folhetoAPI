@@ -23,7 +23,7 @@ class InteresseController extends Controller
             return response()->json(count($enums) ,200);
             $interesse = Interesse::where('usuario_id',1)->first();
             if($interesse){
-                ApiException::lancarExcessao(1);            
+                ApiException::throwException(1);            
             }
             $enums = TipoInteresse::getValues();
             foreach ($enums as $enun) {

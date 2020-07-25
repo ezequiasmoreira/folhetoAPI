@@ -17,7 +17,7 @@ class UserSpec
     
     public function validarUsuario($usuario){
         if(!$usuario){
-            ApiException::lancarExcessao(5,'Usuário'); 
+            ApiException::throwException(5,'Usuário'); 
         }        
     }
     public function validarPermissaoPorPerfil($usuario,$usuarioLogado){        
@@ -32,7 +32,7 @@ class UserSpec
     }
     public function validarPerfilUsuario($usuario,$usuarioLogado){
         if($usuario->id != $usuarioLogado->id){
-            ApiException::lancarExcessao(7,'('.$usuarioLogado->name.'),('.$usuario->name.')');
+            ApiException::throwException(7,'('.$usuarioLogado->name.'),('.$usuario->name.')');
         }
     }
     
@@ -54,17 +54,17 @@ class UserSpec
     }
     public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuarioLogado){
         if($empresa->usuario_id != $usuarioLogado->id){
-            ApiException::lancarExcessao(10,$usuarioLogado->Name.','.$empresa->razao_social);
+            ApiException::throwException(10,$usuarioLogado->Name.','.$empresa->razao_social);
         }
         return true;
     }
     public function validarPerfilFuncionario($usuario,$usuarioLogado){       
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if (!($usuarioLogado->perfil == $perfilFuncionario)){
-            ApiException::lancarExcessao(9,$usuarioLogado->perfil);
+            ApiException::throwException(9,$usuarioLogado->perfil);
         } 
         if (!($usuario->perfil == $perfilFuncionario)){      
-            ApiException::lancarExcessao(9,$usuario->perfil);
+            ApiException::throwException(9,$usuario->perfil);
         } 
         return true;
     }
@@ -102,7 +102,7 @@ class UserSpec
             return true;
         }
         if(!$permite){            
-            ApiException::lancarExcessao(12);
+            ApiException::throwException(12);
         }
         return true;
     }
@@ -117,7 +117,7 @@ class UserSpec
             }
         } 
         if(!$permitido){
-            ApiException::lancarExcessao(8,$perfil.','.$perfis);
+            ApiException::throwException(8,$perfil.','.$perfis);
         }
         return true;      
     }
@@ -128,7 +128,7 @@ class UserSpec
             'password' => 'required|string|min:6|confirmed',
             ]);
             if($validator->fails()){
-                ApiException::lancarExcessao(11,$validator->errors()->toJson());
+                ApiException::throwException(11,$validator->errors()->toJson());
             }
         return true;      
     }
@@ -138,13 +138,13 @@ class UserSpec
             'name' => 'required|string|max:255'
         ]);
         if($validator->fails()){
-            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+            ApiException::throwException(11,$validator->errors()->toJson());
         }
         return true;      
     }
     public function validarStatus($enviado,$esperado,$mensagemDoErro,$parametros=null){        
         if($enviado != $esperado){
-            ApiException::lancarExcessao(16,$mensagemDoErro,$parametros);
+            ApiException::throwException(16,$mensagemDoErro,$parametros);
         }
         return true;      
     }

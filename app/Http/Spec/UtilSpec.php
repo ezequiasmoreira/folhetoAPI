@@ -10,20 +10,20 @@ class UtilSpec
         $this->cnpjQuantidadeDigitosValidoComPonto($cnpj);
         $this->cnpjQuantidadeDigitosValidoSemPonto($cnpj);
         if(!$this->cnpjValido($cnpj)){
-            ApiException::lancarExcessao(5,'CNPJ: '.$cnpj);
+            ApiException::throwException(5,'CNPJ: '.$cnpj);
         }
         return true;      
     }
     private function existeCnpj($cnpj){          
         if(!$cnpj){
-            ApiException::lancarExcessao(14,'CNPJ');
+            ApiException::throwException(14,'CNPJ');
         }
         return true; 
     }
     private function cnpjQuantidadeDigitosValidoComPonto($cnpj){ 
         $quantidadeCorreta = 18;         
         if(strlen($cnpj)!=$quantidadeCorreta){
-            ApiException::lancarExcessao(15,'CNPJ'.','.$quantidadeCorreta);
+            ApiException::throwException(15,'CNPJ'.','.$quantidadeCorreta);
         }
         return true; 
     }
@@ -33,7 +33,7 @@ class UtilSpec
         $cnpj =  str_replace('/','',$cnpj);     
         $cnpj =  str_replace('-','',$cnpj);     
         if(strlen($cnpj)!=$quantidadeCorreta){
-            ApiException::lancarExcessao(16,'CNPJ'.','.'XX.XXX.XXX/XXXX-XX');
+            ApiException::throwException(16,'CNPJ'.','.'XX.XXX.XXX/XXXX-XX');
         }
         return true; 
     }
@@ -66,7 +66,7 @@ class UtilSpec
     }
     public function validarStatus($enviado,$esperado,$codigoDaMensagem,$parametros=null){        
         if($enviado != $esperado){
-            ApiException::lancarExcessao($codigoDaMensagem,$parametros);
+            ApiException::throwException($codigoDaMensagem,$parametros);
         }
         return true;      
     }

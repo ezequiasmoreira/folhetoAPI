@@ -8,7 +8,7 @@ final class ExceptionMensagem implements Documentacao {
             'mensagem' => 'Possui as mensagens das excessões lançada no sistema',
                'exemplo' => [
                     'parametros' => '$codigoAtualizar = 1 - 4 - 2; $codigos= 9 - 10;',
-                    'aplicar' => ' ApiException::lancarExcessao(6,$codigoAtualizar.",".$codigos);' 
+                    'aplicar' => ' ApiException::throwException(6,$codigoAtualizar.",".$codigos);' 
                 ]
             ];
         return $retorno;

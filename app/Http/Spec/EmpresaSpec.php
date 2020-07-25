@@ -29,14 +29,14 @@ class EmpresaSpec
             'cidade_id'  => 'required|integer',   
         ]);
         if($validator->fails()){
-            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+            ApiException::throwException(11,$validator->errors()->toJson());
         }
         return true;      
     }
     public function validarCamposObrigatorioAtualizar($request){  
         $empresaService = new EmpresaService();
-        if(!$request->id) ApiException::lancarExcessao(22);        
-        if(!$request->cpf) ApiException::lancarExcessao(14,'Cpf');
+        if(!$request->id) ApiException::throwException(22);        
+        if(!$request->cpf) ApiException::throwException(14,'Cpf');
         $empresa = $empresaService->obterPorId($request->id);
         $cpfUnico = ($empresa->cpf != $request->cpf);
                
@@ -53,21 +53,21 @@ class EmpresaSpec
             'cidade_id'  => 'required|integer',   
         ]);
         if($validator->fails()){
-            ApiException::lancarExcessao(11,$validator->errors()->toJson());
+            ApiException::throwException(11,$validator->errors()->toJson());
         }
         return true;      
     }
     public function validarVinculoEmpresaPorUsuario($usuario){  
         $this->empresaService = new EmpresaService();
         $empresaUsuarioLogado = $this->empresaService->obterEmpresaPorUsuario($usuario);
-        (!$empresaUsuarioLogado) ? ApiException::lancarExcessao(23) : true;         
+        (!$empresaUsuarioLogado) ? ApiException::throwException(23) : true;         
         return true;      
     }
     public function permiteAlterarUsuario($empresa){ 
         $this->usuarioService = new UserService();       
         $usuario =  $this->usuarioService->obterUsuarioLogado();  
         if($empresa->usuario_id != $usuario->id){
-            ApiException::lancarExcessao(24);
+            ApiException::throwException(24);
         }         
         return true;      
     }
@@ -75,7 +75,7 @@ class EmpresaSpec
         $fisica = Tipo::getValue('Fisica'); 
         $juridica = Tipo::getValue('Juridica');           
         if(($fisica != $tipo)&&($juridica != $tipo)){
-            ApiException::lancarExcessao(13,$tipo.','.$fisica.' - '.$juridica);
+            ApiException::throwException(13,$tipo.','.$fisica.' - '.$juridica);
         }    
         return true;      
     }
@@ -100,7 +100,7 @@ class EmpresaSpec
     }
     private function existeEmpresa($empresa){ 
         if(!$empresa){
-            ApiException::lancarExcessao(5,'Empresa');
+            ApiException::throwException(5,'Empresa');
         }
         return true;    
     }

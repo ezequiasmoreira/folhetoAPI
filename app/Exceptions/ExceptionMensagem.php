@@ -40,6 +40,7 @@ class ExceptionMensagem
             ['codigo'=> 22 ,'descricao'=> 'Não informado ID da empresa para atualizar'],
             ['codigo'=> 23 ,'descricao'=> 'Não Permitido, usuário não possui empresa vinculada'],
             ['codigo'=> 24 ,'descricao'=> 'Não Permitido, empresa deve ser atualizada pelo proprietário'],
+            ['codigo'=> 25 ,'descricao'=> 'Não informado ID do funcionário para atualizar'],
         ];
     }
 }
