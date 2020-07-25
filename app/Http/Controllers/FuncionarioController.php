@@ -21,19 +21,6 @@ class FuncionarioController extends Controller
         $this->funcionario = new Funcionario();
         $this->funcionarioService = new FuncionarioService();
     }
-/*
-{
-	"name": "Funcionario teste",
-    "email": "F@F13",
-    "password": "mantena",
-    "password_confirmation":"mantena",
-    "rua":"São bernado",
-    "numero":150,
-     "bairro":"Centro",
-    "complemento":"Proxximo a esucri",
-    "cep":"88852-536",
-    "cidade_id":2 
-}*/
     public function salvar(Request $request){       
         $this->enderecoService = new EnderecoService();
         $this->usuarioService = new UserService();
