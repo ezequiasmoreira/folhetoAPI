@@ -20,6 +20,10 @@ class FuncionarioService
         $this->funcionarioRepository = new FuncionarioRepository();
         $this->funcionarioSpec = new FuncionarioSpec();
     }
+    public function validarRequisicaoSalvar($request){
+        $this->funcionarioSpec->validarCamposObrigatorio($request);
+        return true;
+    }
     public function salvar($usuario,$empresa,$endereco){
         $this->usuarioService = new UserService();
         $this->empresaService = new EmpresaService();        
@@ -37,10 +41,6 @@ class FuncionarioService
         $funcionario->endereco_id = $endereco->id;
         $salvou = $funcionario->save();
         $this->utilService->validarStatus($salvou,true,19);
-        return true;
-    }
-    public function validar($endereco){
-        $this->enderecoSpec->validar($endereco);
         return true;
     }
     public function obterFuncionarioPorUsuario($usuario,$validaRetorno){

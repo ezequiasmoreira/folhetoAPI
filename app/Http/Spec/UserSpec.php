@@ -74,6 +74,9 @@ class UserSpec
         if(!$this->ehFuncionario($usuario)){
             return false;
         }
+        if(!$this->usuarioLogadoPossuiEmpresa()){
+            return false;
+        }
         $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario,false);  
         if(!$funcionario){
             return true;
@@ -88,10 +91,7 @@ class UserSpec
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if (!($usuario->perfil == $perfilFuncionario)){
             return false;
-        } 
-        if(!$this->usuarioPossuiEmpresa($usuario)){
-            return false;
-        }
+        }         
         return true;
     }
     public function permitePerfilFuncionario($perfil,$permite){

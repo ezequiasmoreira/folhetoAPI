@@ -64,7 +64,6 @@ class EmpresaSpec
         return true;      
     }
     public function permiteAlterarUsuario($empresa){ 
-        $this->empresaService = new EmpresaService();
         $this->usuarioService = new UserService();       
         $usuario =  $this->usuarioService->obterUsuarioLogado();  
         if($empresa->usuario_id != $usuario->id){

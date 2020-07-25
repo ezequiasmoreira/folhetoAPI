@@ -52,17 +52,19 @@ class UserService
     public function obterPerfisPermitido(){
        return Perfil::getValues();
     }
-    public function salvar($request){
+    public function salvar($request,$perfil='USUARIO'){
         if ($request->get('perfil')){
             $perfisPermitido = $this->obterPerfisPermitido(); 
             $this->userSpec->validarPerfilPermitido($request->get('perfil'),$perfisPermitido); 
             $this->userSpec->permitePerfilFuncionario($request->get('perfil'),false);
+        }else{
+            $perfil = Perfil::getValue($perfil);
         }
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'perfil' => $request->get('perfil') ? $request->get('perfil') : 'USUARIO',
+            'perfil' => $request->get('perfil') ? $request->get('perfil') : $perfil,
         ]);
         return $user;
     }
