@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Enums\Perfil;
 use App\Http\Spec\UserSpec;
 use App\Http\Service\EmpresaService;
+use App\Http\Service\InteresseService;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Exceptions\ApiException;
@@ -14,6 +15,7 @@ class UserService
 {
     private $empresaService;
     private $userRepository;
+    public $interesseService;
     public $userSpec;
     public function __construct()  {
        $this->userSpec = new UserSpec();
@@ -93,6 +95,18 @@ class UserService
     }
     public function usuarioLogadoPossuiEmpresa(){
         return $this->userSpec->usuarioLogadoPossuiEmpresa();
+    }
+    public function excluir($usuario,$origem=null){
+        $this->empresaService = new EmpresaService();
+        $this->interesseService = new InteresseService();
+        
+        $this->userSpec->validarUsuario($usuario);        
+        if ($usuario->perfil == Perfil::getValue('Funcionario')) {
+            $this->userSpec->validarPermiteExcluirUsuario($usuario);
+        }
+        (Boolean)$permiteExcluir = $this->userSpec->validarPermiteExcluirUsuarioPorOrigem($usuario,$origem);   
+        ($permiteExcluir) ? $this->interesseService->excluirPorUsuario($usuario) : true;        
+        return $permiteExcluir ?  $usuario->delete() : true;
     }
      
 }

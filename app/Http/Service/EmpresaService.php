@@ -20,6 +20,10 @@ class EmpresaService
         $this->empresaSpec = new EmpresaSpec();
         $this->empresaRepository = new EmpresaRepository();
     }
+    public function usuarioPossuiEmpresa($usuario){       
+        $empresa = $this->empresaRepository->obterEmpresaPorUsuario($usuario);
+        return $empresa ? true : false;        
+    }
     public function obterEmpresaPorUsuario($usuario){   
         $this->funcionarioService = new FuncionarioService();     
         $empresa = $this->empresaRepository->obterEmpresaPorUsuario($usuario);
@@ -95,5 +99,10 @@ class EmpresaService
         $empresa = $this->obterPorId($request->id);
         $empresa->update($request->all());     
         return true;
+    }
+    public function obterEmpresaPorEndereco($endereco,$validaRetorno=true){ 
+        $empresa = $this->empresaRepository->obterEmpresaPorEndereco($endereco);
+        ($validaRetorno) ? $this->empresaSpec->validar($empresa) : true;
+        return $empresa;
     }
 }

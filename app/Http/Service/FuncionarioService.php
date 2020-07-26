@@ -8,7 +8,7 @@ use App\Http\Service\EmpresaService;
 use App\Http\Service\EnderecoService;
 use App\Http\Service\UtilService;
 use App\Http\Spec\FuncionarioSpec;
-//use App\Exceptions\ApiException;
+use App\Exceptions\ApiException;
 
 class FuncionarioService
 {
@@ -42,6 +42,18 @@ class FuncionarioService
         $this->atualizarEnderecoVinculado($request,$endereco);
         return true;
     }
+    public function excluir($id){
+        $this->usuarioService = new UserService(); 
+        $this->enderecoService = new EnderecoService();
+       
+        $funcionario = $this->obterPorId($id);            
+        $usuario = $this->obterUsuarioPorFuncionario($funcionario);        
+        $endereco = $this->obterEnderecoPorFuncionario($funcionario);
+        $this->enderecoService->excluir($endereco,'Funcionario',$id);        
+        $this->usuarioService->excluir($usuario);
+        $funcionario->delete();
+        return true;
+    }
     public function salvar($usuario,$empresa,$endereco){
         $this->usuarioService = new UserService();
         $this->empresaService = new EmpresaService();        
@@ -61,9 +73,9 @@ class FuncionarioService
         $this->utilService->validarStatus($salvou,true,19);
         return true;
     }
-    public function obterFuncionarioPorUsuario($usuario,$validaRetorno){
-        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario,false);
-        if ($validaRetorno) $this->funcionarioSpec->validar($funcionario);
+    public function obterFuncionarioPorUsuario($usuario,$validaRetorno=true){
+        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
+        ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
         return $funcionario;
     }
     public function obterUsuarioPorFuncionario($funcionario){
@@ -75,6 +87,11 @@ class FuncionarioService
         $this->enderecoService = new EnderecoService();       
         $endereco = $this->enderecoService->obterPorId($funcionario->endereco_id);
         return $endereco;
+    }
+    public function obterFuncionarioPorEndereco($endereco,$validaRetorno=true){
+        $funcionario = $this->funcionarioRepository->obterFuncionarioPorEndereco($endereco);       
+        ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
+        return $funcionario;
     }
     public function obterPorId($funcionarioId){
         $funcionario = $this->funcionarioRepository->obterPorId($funcionarioId);

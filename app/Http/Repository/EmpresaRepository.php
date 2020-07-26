@@ -8,6 +8,9 @@ class EmpresaRepository
     public function __construct()  {   
        $this->empresa = new Empresa();   
     }
+    public function obterEmpresaPorEndereco($endereco){
+        return  Empresa::where('endereco_id',$endereco->id)->first();
+    }
     public function obterEmpresaPorUsuario($usuario){
         return  Empresa::where('usuario_id',$usuario->id)->first();
     }

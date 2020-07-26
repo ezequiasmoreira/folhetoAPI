@@ -75,6 +75,10 @@ class InteresseService
         }                   
         return true;
     }
+    public function excluirPorUsuario ($usuario){  
+        //Não implementado            
+        return true;
+    }
     public function validarInteresse ($interesse){
         $this->interreseSpec->validarInteresse($interesse);
     }
