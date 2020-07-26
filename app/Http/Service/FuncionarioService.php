@@ -99,7 +99,7 @@ class FuncionarioService
         $endereco->cep          = $request->cep;
         $endereco->cidade_id    = $request->cidade_id;
         $salvou = $endereco->save();
-        $this->utilService->validarStatus($salvou,true,26,'endereco');
+        $this->utilService->validarStatus($salvou,true,26,'endereço');
         return true;
     }
 }

@@ -32,21 +32,25 @@ class FuncionarioController extends Controller
             $usuario = $this->usuarioService->salvar($request,'Funcionario');
             $usuarioLogado =  $this->usuarioService->obterUsuarioLogado();
             $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);
-            $this->funcionarioService->salvar($usuario,$empresa,$endereco);   
+            $this->funcionarioService->salvar($usuario,$empresa,$endereco);  
+            DB::commit(); 
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }            
+        return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
+    }
+    public function atualizar(Request $request) {
+        DB::beginTransaction();
+        try {
+            $this->funcionarioService->validarRequisicaoAtualizar($request);
+            $this->funcionarioService->atualizar($request);
+            DB::commit(); 
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
-        DB::commit();    
-        return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
-    }
-    public function atualizar(Request $request) {
-        try {
-            $this->funcionarioService->validarRequisicaoAtualizar($request);
-            $this->funcionarioService->atualizar($request);
-        } catch (Exception $exception) {
-            return response()->json(['mensagem'=> $exception->getMessage()],500);
-        }
+
         return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
 

@@ -41,7 +41,7 @@ class ExceptionMensagem
             ['codigo'=> 23 ,'descricao'=> 'Não Permitido, usuário não possui empresa vinculada'],
             ['codigo'=> 24 ,'descricao'=> 'Não Permitido, empresa deve ser atualizada pelo proprietário'],
             ['codigo'=> 25 ,'descricao'=> 'Não informado ID do funcionário para atualizar'],
-            ['codigo'=> 26 ,'descricao'=> 'Não foi possível Atualizar o funcionário. problemas ao salvar ?'],
+            ['codigo'=> 26 ,'descricao'=> 'Não foi possível Atualizar o funcionário. Problemas ao salvar ?'],
         ];
     }
 }
