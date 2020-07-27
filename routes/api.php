@@ -43,6 +43,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //usuário
     Route::group(["prefix" => "usuario"], function () {
         Route::put("/atualizar", "UserController@atualizar");
+        Route::delete("/{id}/excluir", "UserController@excluir");
     });
     
     //localizacao

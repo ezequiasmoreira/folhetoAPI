@@ -43,13 +43,21 @@ class UserSpec
         $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);       
         return  ($empresa)?true:false;               
     }
-    public function validarPermiteExcluirUsuario($usuario){
-        if(!$this->permiteSalvarFuncionario($usuario)){
+    public function validarPermiteExcluirUsuario($usuario,$origem){
+        $this->usuarioService = new UserService();
+
+        (!$this->permiteSalvarFuncionario($usuario)) ? ApiException::throwException(27) : true;
+        if (($this->ehFuncionario($usuario))&&($origem != 'Funcionario')) {
             ApiException::throwException(27);
-        }      
+        }        
+        if(!$this->ehFuncionario($usuario)){
+            $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
+            ($usuario->id != $usuarioLogado->id) ? ApiException::throwException(30) : true;
+        }        
         return  true;               
     }
     public function validarPermiteExcluirUsuarioPorOrigem($usuario,$origem){
+        $this->empresaService = new EmpresaService();
         (Boolean)$possuiEmpresa = $this->empresaService->usuarioPossuiEmpresa($usuario);
         if(($origem == "Empresa")){
             return  true;  

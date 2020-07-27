@@ -42,9 +42,10 @@ class ExceptionMensagem
             ['codigo'=> 24 ,'descricao'=> 'Não Permitido, empresa deve ser atualizada pelo proprietário.'],
             ['codigo'=> 25 ,'descricao'=> 'Não informado ID do funcionário para atualizar.'],
             ['codigo'=> 26 ,'descricao'=> 'Não foi possível Atualizar o funcionário. Problemas ao salvar ?.'],
-            ['codigo'=> 27 ,'descricao'=> 'Usuário não possui permissão para excluir funcionário.'],
+            ['codigo'=> 27 ,'descricao'=> 'Usuário a ser excluído é funcionário. Exclua o funcionário.'],
             ['codigo'=> 28 ,'descricao'=> 'Endereço está vinculado ao funcionário ou empresa.'],
             ['codigo'=> 29 ,'descricao'=> 'Erro ao excluir o endereço. FuncionarioId: ? EmpresaId: ? Origem: ? Indice da origem: ?'],
+            ['codigo'=> 30 ,'descricao'=> 'Não permitido. Usuário não possui permissão para realizar esta ação'],
         ];
     }
 }

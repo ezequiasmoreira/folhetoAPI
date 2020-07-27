@@ -50,7 +50,7 @@ class FuncionarioService
         $usuario = $this->obterUsuarioPorFuncionario($funcionario);        
         $endereco = $this->obterEnderecoPorFuncionario($funcionario);
         $this->enderecoService->excluir($endereco,'Funcionario',$id);        
-        $this->usuarioService->excluir($usuario);
+        $this->usuarioService->excluir($usuario,'Funcionario');
         $funcionario->delete();
         return true;
     }

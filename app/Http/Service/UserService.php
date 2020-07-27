@@ -98,12 +98,9 @@ class UserService
     }
     public function excluir($usuario,$origem=null){
         $this->empresaService = new EmpresaService();
-        $this->interesseService = new InteresseService();
-        
-        $this->userSpec->validarUsuario($usuario);        
-        if ($usuario->perfil == Perfil::getValue('Funcionario')) {
-            $this->userSpec->validarPermiteExcluirUsuario($usuario);
-        }
+        $this->interesseService = new InteresseService();        
+        $this->userSpec->validarUsuario($usuario);
+        $this->userSpec->validarPermiteExcluirUsuario($usuario,$origem);         
         (Boolean)$permiteExcluir = $this->userSpec->validarPermiteExcluirUsuarioPorOrigem($usuario,$origem);   
         ($permiteExcluir) ? $this->interesseService->excluirPorUsuario($usuario) : true;        
         return $permiteExcluir ?  $usuario->delete() : true;

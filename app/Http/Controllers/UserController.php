@@ -32,12 +32,12 @@ class UserController extends Controller
             $user = $this->usuarioService->salvar($request);       
             $interesseService = new InteresseService();                        
             $interesseService->salvar($user);                       
-            $token = JWTAuth::fromUser($user);                        
+            $token = JWTAuth::fromUser($user); 
+            DB::commit();                       
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
-        }
-        DB::commit();
+        }       
         return response()->json(compact('user','token'),200);
     }
     public function atualizar(Request $request){
@@ -49,7 +49,18 @@ class UserController extends Controller
         }
         return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
-
+    public function excluir($id){
+        DB::beginTransaction();
+        try { 
+            $usuario = $this->usuarioService->obterPorId($id);
+            $this->usuarioService->excluir($usuario);
+            DB::commit();                     
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }
+        return response()->json(['mensagem'=> 'Excluído com sucesso'],200);
+    }
     public function getAuthenticatedUser(){
         try {
             if (! $user = JWTAuth::parseToken()->authenticate()) {

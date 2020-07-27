@@ -76,7 +76,10 @@ class InteresseService
         return true;
     }
     public function excluirPorUsuario ($usuario){  
-        //Não implementado            
+        $interesses = $this->interesseRepository->obterPorUsuario($usuario);  
+        foreach ($interesses as $interesse) { 
+            $interesse->delete();
+        }            
         return true;
     }
     public function validarInteresse ($interesse){
