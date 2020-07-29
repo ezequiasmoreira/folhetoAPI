@@ -8,6 +8,7 @@ use App\Http\Service\EmpresaService;
 use App\Http\Service\EnderecoService;
 use App\Http\Service\UtilService;
 use App\Http\Spec\FuncionarioSpec;
+use App\Http\Dto\FuncionarioDTO;
 use App\Exceptions\ApiException;
 
 class FuncionarioService
@@ -18,9 +19,11 @@ class FuncionarioService
     private $utilService;
     private $funcionarioRepository;
     private $funcionarioSpec;
+    private $funcionarioDTO;
     public function __construct()  {
         $this->funcionarioRepository = new FuncionarioRepository();
         $this->funcionarioSpec = new FuncionarioSpec();
+        $this->funcionarioDTO = new FuncionarioDTO();
     }
     public function validarRequisicaoSalvar($request){
         $this->funcionarioSpec->validarCamposObrigatorioSalvar($request);
@@ -129,5 +132,24 @@ class FuncionarioService
         $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
         $funcionarioProprietario = $this->obterFuncionarioPorUsuario($usuarioDoProprietario);    
         return $funcionarioProprietario;
+    }/*
+    public function ehProprietario($funcionario=null){
+        $this->usuarioService = new UserService();
+        if(!$funcionario){
+            $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
+            $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);            
+        }
+        return $this->funcionarioSpec->ehProprietario($funcionario);
+    }*/
+    public function obterFuncionarios(){
+        $this->usuarioService = new UserService();
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
+        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
+        if(!$ehProprietario){
+            return '';
+        }
+        $empresa = $this->obterEmpresaPorFuncionario($funcionario);
+        return $this->funcionarioDTO->obterFuncionarios($empresa);
     }
 }

@@ -66,4 +66,12 @@ class FuncionarioController extends Controller
         
         return response()->json(['mensagem' => 'Excluído com sucesso'],200);
     }
+    public function obterFuncionarios() {
+        try {
+            $dto = $this->funcionarioService->obterFuncionarios();
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }        
+        return response()->json($dto,200);
+    }
 }

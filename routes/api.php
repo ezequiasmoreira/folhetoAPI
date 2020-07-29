@@ -80,6 +80,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::delete("/{id}/excluir", "FuncionarioController@excluir");
         Route::post("/salvar", "FuncionarioController@salvar");
         Route::put("/atualizar", "FuncionarioController@atualizar");
+        Route::get("/", "FuncionarioController@obterFuncionarios");
     });
 });
 
