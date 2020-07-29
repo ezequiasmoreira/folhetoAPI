@@ -19,6 +19,15 @@ class FuncionarioSpec
         $this->possuiPermissaoParaSalvarFuncionario($usuario);
         return true;    
     }
+    public function permiteExcluirFuncionario($funcionario){        
+        ($this->ehProprietario($funcionario)) ? ApiException::throwException(31) : true; 
+        return true;    
+    }
+    public function ehProprietario($funcionario){ 
+        $this->funcionarioService = new FuncionarioService();
+        $proprietario = $this->funcionarioService->obterFuncionarioProprietario($funcionario);
+        return ($funcionario->id == $proprietario->id) ? true : false;
+    }
     public function validarCamposObrigatorioSalvar($request){ 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

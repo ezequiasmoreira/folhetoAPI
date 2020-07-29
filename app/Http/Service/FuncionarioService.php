@@ -32,8 +32,7 @@ class FuncionarioService
     }
     public function atualizar($request){
         $this->usuarioService = new UserService();
-        $this->empresaService = new EmpresaService(); 
-
+        
         $funcionario = $this->obterPorId($request->id);       
         $usuario = $this->obterUsuarioPorFuncionario($funcionario);
         $endereco = $this->obterEnderecoPorFuncionario($funcionario);
@@ -44,9 +43,9 @@ class FuncionarioService
     }
     public function excluir($id){
         $this->usuarioService = new UserService(); 
-        $this->enderecoService = new EnderecoService();
-       
-        $funcionario = $this->obterPorId($id);            
+        $this->enderecoService = new EnderecoService();        
+        $funcionario = $this->obterPorId($id);  
+        $this->funcionarioSpec->permiteExcluirFuncionario($funcionario);          
         $usuario = $this->obterUsuarioPorFuncionario($funcionario);        
         $endereco = $this->obterEnderecoPorFuncionario($funcionario);
         $this->enderecoService->excluir($endereco,'Funcionario',$id);        
@@ -83,6 +82,11 @@ class FuncionarioService
         $usuario = $this->usuarioService->obterPorId($funcionario->usuario_id);
         return $usuario;
     }
+    public function obterEmpresaPorFuncionario($funcionario){
+        $this->empresaService = new EmpresaService();        
+        $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
+        return $empresa;
+    }
     public function obterEnderecoPorFuncionario($funcionario){
         $this->enderecoService = new EnderecoService();       
         $endereco = $this->enderecoService->obterPorId($funcionario->endereco_id);
@@ -118,5 +122,12 @@ class FuncionarioService
         $salvou = $endereco->save();
         $this->utilService->validarStatus($salvou,true,26,'endereço');
         return true;
+    }
+    public function obterFuncionarioProprietario($funcionario){
+        $this->usuarioService = new UserService();
+        $empresa = $this->obterEmpresaPorFuncionario($funcionario);            
+        $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
+        $funcionarioProprietario = $this->obterFuncionarioPorUsuario($usuarioDoProprietario);    
+        return $funcionarioProprietario;
     }
 }

@@ -57,9 +57,17 @@ final class FuncionarioController implements Documentacao {
             'Só pode excluir um funcionario o proprietário da empresa',
             'verbo' => 'delete',
             'url' => 'http://localhost:8000/api/funcionario/5/excluir',
-        ];
-                  
+        ];                  
         return $retorno;
     }   
 }
+
+
+
+
+
+
+
+
+
 

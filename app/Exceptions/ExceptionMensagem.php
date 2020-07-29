@@ -46,6 +46,7 @@ class ExceptionMensagem
             ['codigo'=> 28 ,'descricao'=> 'Endereço está vinculado ao funcionário ou empresa.'],
             ['codigo'=> 29 ,'descricao'=> 'Erro ao excluir o endereço. FuncionarioId: ? EmpresaId: ? Origem: ? Indice da origem: ?'],
             ['codigo'=> 30 ,'descricao'=> 'Não permitido. Usuário não possui permissão para realizar esta ação'],
+            ['codigo'=> 31 ,'descricao'=> 'Funcionário é propretário. Deve excluir a empresa do proprietário'],
         ];
     }
 }
