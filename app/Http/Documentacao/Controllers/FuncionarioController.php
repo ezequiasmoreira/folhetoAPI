@@ -50,5 +50,16 @@ final class FuncionarioController implements Documentacao {
             ];       
         return $retorno;
     }   
+    public function excluir(){
+        $retorno = [
+            'mensagem' => 'Recurso disponibilizado para excluir um funcionário, ao excluir um funciónario '.
+            'é excluido o endereço vinculado e o usuário se não etiver vinculado a uma empresa.'.
+            'Só pode excluir um funcionario o proprietário da empresa',
+            'verbo' => 'delete',
+            'url' => 'http://localhost:8000/api/funcionario/5/excluir',
+        ];
+                  
+        return $retorno;
+    }   
 }
 

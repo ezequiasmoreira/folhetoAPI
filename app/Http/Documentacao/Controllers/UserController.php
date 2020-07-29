@@ -46,5 +46,13 @@ final class UserController implements Documentacao {
             ];         
         return $retorno;
     }
+    public function excluir(){
+        $retorno = [
+            'mensagem' => 'Recurso para excluir um usuario, ao excluir un endereço também é excluído os interesses".',
+            'verbo' => 'delete',
+            'url' => 'http://localhost:8000/api/usuario/44/excluir',            
+            ];         
+        return $retorno;
+    }
 }
 
