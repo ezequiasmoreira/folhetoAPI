@@ -132,15 +132,7 @@ class FuncionarioService
         $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
         $funcionarioProprietario = $this->obterFuncionarioPorUsuario($usuarioDoProprietario);    
         return $funcionarioProprietario;
-    }/*
-    public function ehProprietario($funcionario=null){
-        $this->usuarioService = new UserService();
-        if(!$funcionario){
-            $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
-            $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);            
-        }
-        return $this->funcionarioSpec->ehProprietario($funcionario);
-    }*/
+    }
     public function obterFuncionarios(){
         $this->usuarioService = new UserService();
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
@@ -149,7 +141,11 @@ class FuncionarioService
         if(!$ehProprietario){
             return '';
         }
+        $campos =[
+            'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
+            'empresa'=>true,
+        ];
         $empresa = $this->obterEmpresaPorFuncionario($funcionario);
-        return $this->funcionarioDTO->obterFuncionarios($empresa);
+        return $this->funcionarioDTO->obterFuncionarios($empresa,$campos);
     }
 }
