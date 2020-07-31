@@ -74,4 +74,12 @@ class FuncionarioController extends Controller
         }        
         return response()->json($dto,200);
     }
+    public function obterFuncionario($id) {
+        try {
+            $dto = $this->funcionarioService->obterFuncionario($id);
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }        
+        return response()->json($dto,200);
+    }
 }

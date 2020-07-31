@@ -28,6 +28,9 @@ class FuncionarioSpec
         $proprietario = $this->funcionarioService->obterFuncionarioProprietario($funcionario);
         return ($funcionario->id == $proprietario->id) ? true : false;
     }
+    public function permiteRetornarFuncionario($funcionarioProprietario,$funcionarioARetornar){ 
+        return ($funcionarioProprietario->empresa_id == $funcionarioARetornar->empresa_id);
+    }
     public function validarCamposObrigatorioSalvar($request){ 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

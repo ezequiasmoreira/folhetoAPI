@@ -138,14 +138,30 @@ class FuncionarioService
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
         $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
-        if(!$ehProprietario){
-            return '';
-        }
+
+        if (!$ehProprietario) return ''; 
+
         $campos =[
             'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
             'empresa'=>['endereco'=>['cidade'=>['estado'=>['pais'=>true]]]],
         ];
         $empresa = $this->obterEmpresaPorFuncionario($funcionario);
         return $this->funcionarioDTO->obterFuncionarios($empresa,$campos);
+    }
+    public function obterFuncionario($funcionario_id){
+        $this->usuarioService = new UserService();
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
+        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionarioARetornar = $this->obterPorId($funcionario_id);
+        (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
+        (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
+        
+        if (!$ehProprietario || !$permiteRetornar) return '{}';
+        
+        $campos =[
+            'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
+            'empresa'=>true,
+        ];
+        return $this->funcionarioDTO->obterFuncionario($funcionario_id,$campos);
     }
 }
