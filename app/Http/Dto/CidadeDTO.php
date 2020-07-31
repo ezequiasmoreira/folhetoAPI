@@ -15,6 +15,7 @@ class CidadeDTO
     public function obterCidade($cidade_id,$campos=null){
         $this->estadoDTO = new EstadoDTO();
         $this->cidadeService = new CidadeService();
+        
         $cidade =  $this->cidadeService->obterPorId($cidade_id);
         $dto =[
             'id'        => $cidade->id,

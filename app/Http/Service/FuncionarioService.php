@@ -143,7 +143,7 @@ class FuncionarioService
         }
         $campos =[
             'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
-            'empresa'=>true,
+            'empresa'=>['endereco'=>['cidade'=>['estado'=>['pais'=>true]]]],
         ];
         $empresa = $this->obterEmpresaPorFuncionario($funcionario);
         return $this->funcionarioDTO->obterFuncionarios($empresa,$campos);
