@@ -28,4 +28,24 @@ class EnderecoDTO
         ];
         return $dto;
     }
+    public function obterEnderecoTemplate($endereco_id,$template=null){
+        $this->cidadeDTO = new CidadeDTO();
+        $this->enderecoService = new EnderecoService();
+        
+        $endereco =  $this->enderecoService->obterPorId($endereco_id);
+
+        $dto = array();
+        isset($template['endereco.id'])             ? $dto = $dto  +   ['id'    => $endereco->id]                   : true;
+        isset($template['endereco.rua'])            ? $dto = $dto  +   ['rua'  => $endereco->rua]                   : true;
+        isset($template['endereco.numero'])         ? $dto = $dto  +   ['numero' => $endereco->numero]              : true;
+        isset($template['endereco.bairro'])         ? $dto = $dto  +   ['bairro'    => $endereco->bairro]           : true;
+        isset($template['endereco.complemento'])    ? $dto = $dto  +   ['complemento'  => $endereco->complemento]   : true;
+        isset($template['endereco.cep'])            ? $dto = $dto  +   ['cep' => $endereco->cep]                    : true;
+        
+        if(isset($template['endereco.cidade'])){
+            $cidade = $this->cidadeDTO->obterCidadeTemplate($endereco->cidade_id,$template['endereco.cidade']);
+            $dto = $dto + ['cidade' => $cidade];
+        }
+         return $dto;
+    }
 }

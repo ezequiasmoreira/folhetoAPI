@@ -81,7 +81,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::post("/salvar", "FuncionarioController@salvar");
         Route::put("/atualizar", "FuncionarioController@atualizar");
         Route::get("/", "FuncionarioController@obterFuncionarios");
-        Route::get("/{id}", "FuncionarioController@obterFuncionario");    
+        Route::get("/{id}", "FuncionarioController@obterFuncionario");
+        Route::get("/{id}/template/{template}", "FuncionarioController@obterFuncionarioTemplate");    
     });
 });
 

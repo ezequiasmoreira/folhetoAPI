@@ -25,4 +25,21 @@ class EstadoDTO
         ];
         return $dto;
     }
+    public function obterEstadoTemplate($estado_id,$template=null){
+        $this->paisDTO = new PaisDTO();
+        $this->estadoService = new EstadoService();
+        $estado =  $this->estadoService->obterPorId($estado_id);
+       
+        $dto = array();
+        isset($template['estado.id'])       ? $dto = $dto  +   ['id'    => $estado->id]         : true;
+        isset($template['estado.nome'])     ? $dto = $dto  +   ['nome'  => $estado->nome]       : true;
+        isset($template['estado.codigo'])   ? $dto = $dto  +   ['codigo' => $estado->codigo]    : true;
+        isset($template['estado.sigla'])   ? $dto = $dto  +   ['sigla' => $estado->sigla]    : true;
+        
+        if(isset($template['estado.pais'])){
+            $pais = $this->paisDTO->obterPaisTemplate($estado->pais_id,$template['estado.pais']);
+            $dto = $dto + ['pais' => $pais];
+        }
+        return $dto;
+    }
 }

@@ -164,4 +164,43 @@ class FuncionarioService
         ];
         return $this->funcionarioDTO->obterFuncionario($funcionario_id,$campos);
     }
+    public function obterFuncionarioTemplate($funcionario_id,$templateCodigo){
+        $this->usuarioService = new UserService();
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
+        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionarioARetornar = $this->obterPorId($funcionario_id);
+        (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
+        (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
+        
+        if (!$ehProprietario || !$permiteRetornar) return '{}';
+        
+        $template =[
+            'funcionario.id' =>true,            
+            'funcionario.name'=>true,
+            'funcionario.email'=>true,
+            'funcionario.endereco'=>[
+                'endereco.id'=>true,
+                'endereco.rua'=>true,
+                'endereco.cep'=>true,
+                'endereco.cidade'=>[
+                    'cidade.id'=>true,
+                    'cidade.nome'=>true,
+                    'cidade.codigo'=>true,
+                    'cidade.estado' => [
+                        'estado.id' =>true,
+                        'estado.nome' =>true,
+                        'estado.codigo' =>true,
+                        'estado.sigla' =>true,
+                        'estado.pais'=>[
+                            'pais.id'=> true,
+                            'pais.nome' =>false,
+                            'pais.codigo' =>true,
+                            'pais.sigla' =>true,
+                        ],
+                    ],
+                ]
+            ]
+        ];
+        return $this->funcionarioDTO->obterFuncionarioTemplate($funcionario_id,$template);
+    }
 }
