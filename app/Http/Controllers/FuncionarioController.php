@@ -84,7 +84,15 @@ class FuncionarioController extends Controller
     }
     public function obterFuncionarioTemplate($id,$template) {
         try {
-        $dto = $this->funcionarioService->obterFuncionarioTemplate($id,$template);
+            $dto = $this->funcionarioService->obterFuncionarioTemplate($id,$template);
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }        
+        return response()->json($dto,200);
+    }
+    public function obterFuncionariosTemplate($template) {
+        try {
+            $dto = $this->funcionarioService->obterFuncionariosTemplate($template);
         } catch (Exception $exception) {
             return response()->json(['mensagem'=> $exception->getMessage()],500);
         }        

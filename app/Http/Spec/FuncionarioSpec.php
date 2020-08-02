@@ -28,7 +28,10 @@ class FuncionarioSpec
         $proprietario = $this->funcionarioService->obterFuncionarioProprietario($funcionario);
         return ($funcionario->id == $proprietario->id) ? true : false;
     }
-    public function permiteRetornarFuncionario($funcionarioProprietario,$funcionarioARetornar){ 
+    public function permiteRetornarFuncionario($funcionarioProprietario,$funcionarioARetornar){
+        if(!$funcionarioARetornar){
+            return false;
+        } 
         return ($funcionarioProprietario->empresa_id == $funcionarioARetornar->empresa_id);
     }
     public function validarCamposObrigatorioSalvar($request){ 

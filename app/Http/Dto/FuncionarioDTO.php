@@ -74,4 +74,27 @@ class FuncionarioDTO
         }
         return $dto;
     }
+    public function obterFuncionariosTemplate($empresa,$template=null){
+        $this->empresaDTO = new EmpresaDTO();
+        $this->enderecoDTO = new EnderecoDTO();
+        $this->usuarioService = new UserService();    
+        
+        $lista  = array();        
+        $funcionarios = $this->funcionarioRepository->obterFuncionarios($empresa);
+
+        foreach ($funcionarios as $funcionario) {
+            $dto = array();
+            $usuario = $this->usuarioService->obterPorId($funcionario->usuario_id);
+            isset($template['funcionario.id'])          ? $dto = $dto  +   ['id'    => $funcionario->id]    : true;
+            isset($template['funcionario.name'])        ? $dto = $dto  +   ['name'  => $usuario->name]      : true;
+            isset($template['funcionario.email'])       ? $dto = $dto  +   ['email' => $usuario->email]     : true;
+            
+            if(isset($template['funcionario.endereco'])){
+                $endereco = $this->enderecoDTO->obterEnderecoTemplate($funcionario->endereco_id,$template['funcionario.endereco']);
+                $dto = $dto + ['endereco' => $endereco];
+            }
+            array_push($lista, $dto);
+        }
+        return $lista;
+    }
 }

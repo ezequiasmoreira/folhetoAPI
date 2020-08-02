@@ -10,6 +10,8 @@ use App\Http\Service\UtilService;
 use App\Http\Spec\FuncionarioSpec;
 use App\Http\Dto\FuncionarioDTO;
 use App\Exceptions\ApiException;
+use App\Http\View\FuncionarioView;
+use App\Enums\FuncionarioConsulta;
 
 class FuncionarioService
 {
@@ -20,10 +22,11 @@ class FuncionarioService
     private $funcionarioRepository;
     private $funcionarioSpec;
     private $funcionarioDTO;
+    private $funcionarioView;
     public function __construct()  {
         $this->funcionarioRepository = new FuncionarioRepository();
         $this->funcionarioSpec = new FuncionarioSpec();
-        $this->funcionarioDTO = new FuncionarioDTO();
+        $this->funcionarioDTO = new FuncionarioDTO();       
     }
     public function validarRequisicaoSalvar($request){
         $this->funcionarioSpec->validarCamposObrigatorioSalvar($request);
@@ -100,9 +103,9 @@ class FuncionarioService
         ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
         return $funcionario;
     }
-    public function obterPorId($funcionarioId){
+    public function obterPorId($funcionarioId,$validaRetorno=true){
         $funcionario = $this->funcionarioRepository->obterPorId($funcionarioId);
-        $this->funcionarioSpec->validar($funcionario);
+        ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
         return $funcionario;
     }
     public function atualizarUsuarioVinculado($request,$usuario){
@@ -135,37 +138,41 @@ class FuncionarioService
     }
     public function obterFuncionarios(){
         $this->usuarioService = new UserService();
+        $this->funcionarioView = new FuncionarioView();
+
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
         $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
 
         if (!$ehProprietario) return ''; 
 
-        $campos =[
-            'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
-            'empresa'=>['endereco'=>['cidade'=>['estado'=>['pais'=>true]]]],
-        ];
+        $metodo = FuncionarioConsulta::getValue("Padrao");        
+        $campos = $this->funcionarioView->$metodo();              
         $empresa = $this->obterEmpresaPorFuncionario($funcionario);
+
         return $this->funcionarioDTO->obterFuncionarios($empresa,$campos);
     }
     public function obterFuncionario($funcionario_id){
         $this->usuarioService = new UserService();
+        $this->funcionarioView = new FuncionarioView();
+
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
         $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
-        $funcionarioARetornar = $this->obterPorId($funcionario_id);
+        $funcionarioARetornar = $this->obterPorId($funcionario_id,false);
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
         (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
         
         if (!$ehProprietario || !$permiteRetornar) return '{}';
-        
-        $campos =[
-            'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
-            'empresa'=>true,
-        ];
+
+        $metodo = FuncionarioConsulta::getValue("Padrao");        
+        $campos = $this->funcionarioView->$metodo();
+
         return $this->funcionarioDTO->obterFuncionario($funcionario_id,$campos);
     }
-    public function obterFuncionarioTemplate($funcionario_id,$templateCodigo){
+    public function obterFuncionarioTemplate($funcionario_id,$template){
         $this->usuarioService = new UserService();
+        $this->funcionarioView = new FuncionarioView();
+        
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
         $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
         $funcionarioARetornar = $this->obterPorId($funcionario_id);
@@ -173,34 +180,27 @@ class FuncionarioService
         (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
         
         if (!$ehProprietario || !$permiteRetornar) return '{}';
-        
-        $template =[
-            'funcionario.id' =>true,            
-            'funcionario.name'=>true,
-            'funcionario.email'=>true,
-            'funcionario.endereco'=>[
-                'endereco.id'=>true,
-                'endereco.rua'=>true,
-                'endereco.cep'=>true,
-                'endereco.cidade'=>[
-                    'cidade.id'=>true,
-                    'cidade.nome'=>true,
-                    'cidade.codigo'=>true,
-                    'cidade.estado' => [
-                        'estado.id' =>true,
-                        'estado.nome' =>true,
-                        'estado.codigo' =>true,
-                        'estado.sigla' =>true,
-                        'estado.pais'=>[
-                            'pais.id'=> true,
-                            'pais.nome' =>false,
-                            'pais.codigo' =>true,
-                            'pais.sigla' =>true,
-                        ],
-                    ],
-                ]
-            ]
-        ];
+            
+        if($template){
+            $metodo = FuncionarioConsulta::getValue($template);
+            $template = $this->funcionarioView->$metodo();
+        }                        
         return $this->funcionarioDTO->obterFuncionarioTemplate($funcionario_id,$template);
+    }
+    public function obterFuncionariosTemplate($template){
+        $this->usuarioService = new UserService();
+        $this->funcionarioView = new FuncionarioView();
+        
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
+        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
+
+        if (!$ehProprietario) return ''; 
+        $empresa = $this->obterEmpresaPorFuncionario($funcionario);   
+        if($template){
+            $metodo = FuncionarioConsulta::getValue($template);
+            $template = $this->funcionarioView->$metodo();
+        }                        
+        return $this->funcionarioDTO->obterFuncionariosTemplate($empresa,$template);
     }
 }

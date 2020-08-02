@@ -69,7 +69,7 @@ class InteresseService
             $codigo = $interesseAtualizar['codigo'];                                       
             $status = $interesseAtualizar['status'];                                       
             $interesse = $this->interesseRepository->obterPorUsuarioCodigo($usuarioId,$codigo);
-            $this->interesseService->validarInteresse($interesse);
+            $this->validarInteresse($interesse);
             $interesse->status = $status;
             $interesse->Save();
         }                   
