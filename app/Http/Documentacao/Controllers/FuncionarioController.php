@@ -60,6 +60,46 @@ final class FuncionarioController implements Documentacao {
         ];                  
         return $retorno;
     }   
+    public function obterFuncionarios(){
+        $retorno = [
+            'mensagem' => 'Recurso disponibilizado para retornar todos funcionários que estão vinculado a empresa do proprietário',
+            'verbo' => 'get',
+            'url' => 'http://localhost:8000/api/funcionario/',
+            'observacao'=>'Esta url não retorna as FK da empresa, para consultas com campos diferente, consulte a documentação da classe (Enums/FuncionarioConsulta)'
+        ];                  
+        return $retorno;
+    }   
+    public function obterFuncionario(){
+        $retorno = [
+            'mensagem' => 'Recurso disponibilizado para retornar um funcionário pelo ID que está vinculado a empresa do proprietário',
+            'verbo' => 'get',
+            'url' => 'http://localhost:8000/api/funcionario/23',
+            'observacao'=>'Esta url não retorna as FK da empresa, para consultas com campos diferente, consulte a documentação da classe (Enums/FuncionarioConsulta)'
+        ];                  
+        return $retorno;
+    }   
+    public function obterFuncionarioTemplate(){
+        $retorno = [
+            'mensagem' => 'Recurso disponibilizado para retornar um funcionário pelo ID que está vinculado a empresa do proprietário'.
+            ' esta consulta possui uma particularidade, é possivel enviar um template na URL, esse template define quais campos '. 
+            'será retornado no json, atualmente é permitido dois formatos de campos Template/Campos',
+            'verbo' => 'get',
+            'url' => 'http://localhost:8000/api/funcionario/23/view/ListarEditar',
+            'observacao'=>'Esta url não retorna as FK da empresa, o campo ListarEditar na url é definido na classe (Enums/FuncionarioConsulta) para maiores detalhes consulte a documentação da classe'
+        ];                  
+        return $retorno;
+    }   
+    public function obterFuncionariosTemplate(){
+        $retorno = [
+            'mensagem' => 'Recurso disponibilizado para retornar todos funcionários que está vinculado a empresa do proprietário'.
+            ' esta consulta possui uma particularidade, é possivel enviar um template na URL, esse template define quais campos '. 
+            'será retornado no json, atualmente é permitido dois formatos de campos Template/Campos',
+            'verbo' => 'get',
+            'url' => 'http://localhost:8000/api/funcionario/view/ListarEditar',
+            'observacao'=>'Esta url não retorna as FK da empresa, o campo ListarEditar na url é definido na classe (Enums/FuncionarioConsulta) para maiores detalhes consulte a documentação da classe'
+        ];                  
+        return $retorno;
+    }   
 }
 
 
