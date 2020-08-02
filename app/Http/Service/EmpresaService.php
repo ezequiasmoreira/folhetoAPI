@@ -92,7 +92,7 @@ class EmpresaService
         
         $this->utilService->validarStatus($salvou,true,18);  
         $this->usuarioService->atualizarPerfilFuncionario($empresa,$usuarioLogado);      
-        $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco);        
+        $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco,"Empresa");        
         return true;
     }
     public function atualizar($request){ 

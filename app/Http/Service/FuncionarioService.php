@@ -59,7 +59,7 @@ class FuncionarioService
         $funcionario->delete();
         return true;
     }
-    public function salvar($usuario,$empresa,$endereco){
+    public function salvar($usuario,$empresa,$endereco,$origem="Funcionario"){
         $this->usuarioService = new UserService();
         $this->empresaService = new EmpresaService();        
         $this->enderecoService = new EnderecoService();
@@ -67,8 +67,8 @@ class FuncionarioService
 
         $this->empresaService->validar($empresa); 
         $this->enderecoService->validar($endereco);       
-        $this->usuarioService->validarUsuario($usuario);
-        $this->funcionarioSpec->permiteSalvar($usuario);
+        $this->usuarioService->validarUsuario($usuario);        
+        ($origem !="Empresa") ? $this->funcionarioSpec->permiteSalvar($usuario) : true;
         
         $funcionario = new Funcionario();
         $funcionario->usuario_id = $usuario->id;
