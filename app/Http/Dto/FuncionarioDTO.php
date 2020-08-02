@@ -72,6 +72,10 @@ class FuncionarioDTO
             $endereco = $this->enderecoDTO->obterEnderecoTemplate($funcionario->endereco_id,$template['funcionario.endereco']);
             $dto = $dto + ['endereco' => $endereco];
         }
+        if(isset($template['funcionario.empresa'])){
+            $empresa = $this->empresaDTO->obterEmpresaTemplate($funcionario->empresa_id,$template['funcionario.empresa']);
+            $dto = $dto + ['empresa' => $empresa];
+        }
         return $dto;
     }
     public function obterFuncionariosTemplate($empresa,$template=null){
@@ -93,6 +97,11 @@ class FuncionarioDTO
                 $endereco = $this->enderecoDTO->obterEnderecoTemplate($funcionario->endereco_id,$template['funcionario.endereco']);
                 $dto = $dto + ['endereco' => $endereco];
             }
+
+            if(isset($template['funcionario.empresa'])){
+                $empresa = $this->empresaDTO->obterEmpresaTemplate($funcionario->empresa_id,$template['funcionario.empresa']);
+                $dto = $dto + ['empresa' => $empresa];
+            }            
             array_push($lista, $dto);
         }
         return $lista;

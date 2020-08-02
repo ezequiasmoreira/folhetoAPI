@@ -32,7 +32,11 @@ class FuncionarioView
                         ],
                     ],
                 ]
-            ]
+            ],
+            'funcionario.empresa'=>[
+                'empresa.id'=>true,
+                'empresa.razao_social'=>true
+            ]            
         ];   
     }
     public function obterlistar(){         
