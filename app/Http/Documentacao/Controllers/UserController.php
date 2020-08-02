@@ -6,7 +6,7 @@ final class UserController implements Documentacao {
     public function finalidade(){        
         return "Reposnsável por disponibilizar os recursos do usuário";
     }
-    public function cadastrar(){
+    public function salvar(){
         $retorno = [
             'mensagem' => 'Salva um usuário no sistema, ao salvar o usuário também salva os interreses ".
             "vinculado ao usuário cadastrado, para posteriormente ser atualizado',

@@ -54,7 +54,9 @@ class UserService
     public function obterPerfisPermitido(){
        return Perfil::getValues();
     }
-    public function salvar($request,$perfil='USUARIO'){
+    public function salvar($request,$perfil='Usuario'){
+        $this->interesseService = new InteresseService(); 
+
         if ($request->get('perfil')){
             $perfisPermitido = $this->obterPerfisPermitido(); 
             $this->userSpec->validarPerfilPermitido($request->get('perfil'),$perfisPermitido); 
@@ -68,6 +70,9 @@ class UserService
             'password' => Hash::make($request->get('password')),
             'perfil' => $request->get('perfil') ? $request->get('perfil') : $perfil,
         ]);
+        if ($user->perfil == Perfil::getValue('Usuario')){                                  
+            $this->interesseService->salvar($user);   
+        }
         return $user;
     }
     public function validarCamposObrigatorioCadastrar($request){

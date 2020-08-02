@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Http\Service\InteresseService;
 use App\Http\Service\UserService;
 use Exception;
 
@@ -25,13 +24,11 @@ class UserController extends Controller
         }
         return response()->json(compact('token'));
     }
-    public function cadastrar(Request $request){
+    public function salvar(Request $request){
         DB::beginTransaction();
         try {                       
             $this->usuarioService->validarCamposObrigatorioCadastrar($request);
-            $user = $this->usuarioService->salvar($request);       
-            $interesseService = new InteresseService();                        
-            $interesseService->salvar($user);                       
+            $user = $this->usuarioService->salvar($request);                               
             $token = JWTAuth::fromUser($user); 
             DB::commit();                       
         } catch (Exception $exception) {

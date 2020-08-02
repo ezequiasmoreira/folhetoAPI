@@ -22,7 +22,7 @@ Route::group(["prefix" => "funcionario"], function () {
     Route::delete("/{id}/excluir", "FuncionarioController@excluir");
     Route::post("/salvar", "FuncionarioController@salvar");
 });
-Route::post('usuario/salvar', 'UserController@cadastrar');
+Route::post('usuario/salvar', 'UserController@salvar');
 Route::post('login', 'UserController@autenticar');
 Route::get('open', 'DataController@open');
 
