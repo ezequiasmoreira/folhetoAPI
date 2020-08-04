@@ -15,12 +15,17 @@ class Enderecos extends Migration
     {
         Schema::create('enderecos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('rua');
+            $table->string('rua',250);
+            $table->string('nome',100)->nullable();
             $table->integer('numero');
-            $table->string('bairro');
-            $table->string('complemento');
+            $table->string('bairro',250);
+            $table->string('complemento',250)->nullable();
             $table->string('cep',10);
-            $table->integer('cidade_id');
+            $table->integer('cidade_id')->unsigned();
+            $table->foreign('cidade_id')->references('id')->on('cidades')->onDelete('cascade');
+            $table->integer('usuario_id')->nullable()->unsigned();
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('principal')->nullable();
             $table->timestamps();
         });
     }

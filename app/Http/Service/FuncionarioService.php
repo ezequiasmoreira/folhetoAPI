@@ -53,10 +53,9 @@ class FuncionarioService
         $funcionario = $this->obterPorId($id);  
         $this->funcionarioSpec->permiteExcluirFuncionario($funcionario);          
         $usuario = $this->obterUsuarioPorFuncionario($funcionario);        
-        $endereco = $this->obterEnderecoPorFuncionario($funcionario);
-        $this->enderecoService->excluir($endereco,'Funcionario',$id);        
+        $endereco = $this->obterEnderecoPorFuncionario($funcionario);             
         $this->usuarioService->excluir($usuario,'Funcionario');
-        $funcionario->delete();
+        $this->enderecoService->excluir($endereco);        
         return true;
     }
     public function salvar($usuario,$empresa,$endereco,$origem="Funcionario"){
@@ -71,6 +70,7 @@ class FuncionarioService
         ($origem !="Empresa") ? $this->funcionarioSpec->permiteSalvar($usuario) : true;
         
         $funcionario = new Funcionario();
+        $funcionario->codigo = ($origem !="Empresa") ? 1: $this->obterCodigo();
         $funcionario->usuario_id = $usuario->id;
         $funcionario->empresa_id = $empresa->id;
         $funcionario->endereco_id = $endereco->id;
@@ -187,6 +187,10 @@ class FuncionarioService
         }                        
         return $this->funcionarioDTO->obterFuncionarioTemplate($funcionario_id,$template);
     }
+    public function obterCodigo(){
+        //implementar lógica
+        return 2;
+    }
     public function obterFuncionariosTemplate($template){
         $this->usuarioService = new UserService();
         $this->funcionarioView = new FuncionarioView();
@@ -203,4 +207,5 @@ class FuncionarioService
         }                        
         return $this->funcionarioDTO->obterFuncionariosTemplate($empresa,$template);
     }
+
 }

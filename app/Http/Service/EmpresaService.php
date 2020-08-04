@@ -81,6 +81,7 @@ class EmpresaService
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
 
         $empresa = new Empresa();
+        $empresa->codigo = $request->codigo;
         $empresa->razao_social = $request->razao_social;
         $empresa->nome_fantasia = $request->nome_fantasia;
         $empresa->cnpj = $request->cnpj;

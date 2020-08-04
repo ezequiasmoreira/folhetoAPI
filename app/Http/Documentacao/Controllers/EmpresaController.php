@@ -13,6 +13,7 @@ final class EmpresaController implements Documentacao {
             'verbo' => 'post',
             'url' => 'http://localhost:8000/api/empresa/salvar',
             'json-esperado' => [
+                "codigo"        =>1,
                 "razao_social"  =>"Folheto Virtual LTDA",
                 "nome_fantasia" =>"Folheto Virtual",
                 "cpf"           =>"101.986.897-44",

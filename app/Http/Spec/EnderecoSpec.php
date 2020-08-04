@@ -29,39 +29,6 @@ class EnderecoSpec
         $this->existeEndereco($endereco);
         return true;    
     }
-    public function validarParametrosParaExcluir($funcionario=null,$empresa=null,$origem=null,$origemId=null){       
-        if((!$funcionario)&&(!$empresa)){
-            return true;
-        }
-        if((!$origem) || (!$origemId)){
-            ApiException::throwException(28);
-        }
-        if(($origem != 'Empresa') && ($origem != 'Funcionario')){
-            $parametros=$funcionario->id.','.$empresa->id.','.$origem.','.$origemId;
-            ApiException::throwException(29,$parametros);
-        }
-        return true;    
-    }
-    public function permiteExcluirEndereco($funcionario=null,$empresa=null,$origem,$origemId){         
-        ($origem == 'Empresa')     ? $this->validarExcluirOrigemEmpresa($empresa,$origemId)         : true;
-        ($origem == 'Funcionario') ? $this->validarExcluirOrigemFuncionario($funcionario,$empresa,$origemId) : true;
-        return true;    
-    }
-    private function validarExcluirOrigemEmpresa($empresa,$origemId){ 
-        //Implementar quando for criar a exclusão da empresa ou endereço da empresa
-        return true;    
-    }
-    private function validarExcluirOrigemFuncionario($funcionario,$empresa,$origemId){            
-        $this->funcionarioService = new FuncionarioService();
-        $funcionarioOrigem = $this->funcionarioService->obterPorId($origemId);
-        if($funcionarioOrigem->id != $funcionario->id){
-            ApiException::throwException(28);
-        }
-        if(!$empresa){
-            return true;   
-        }
-        return false; 
-    }
     private function existeEndereco($endereco){ 
         if(!$endereco){
             ApiException::throwException(5,'Endereço');

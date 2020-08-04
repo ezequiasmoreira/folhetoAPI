@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Empresas extends Migration
+class Cidades extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,13 @@ class Empresas extends Migration
      * @return void
      */
     public function up()
-    { 
-        Schema::create('empresas', function (Blueprint $table) {
+    {
+        Schema::create('cidades', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('razao_social');
-            $table->string('nome_fantasia');
-            $table->string('cnpj');
-            $table->string('cpf');
-            $table->string('tipo',10);
-            $table->string('logo');
-            $table->integer('endereco_id');
-            $table->integer('usuario_id');
+            $table->string('nome',250);
+            $table->integer('codigo');
+            $table->integer('estado_id')->unsigned();
+            $table->foreign('estado_id')->references('id')->on('estados')->onDelete('cascade');
             $table->timestamps();
         });
     }

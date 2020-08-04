@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Funcionarios extends Migration
+class Pais extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class Funcionarios extends Migration
      */
     public function up()
     {
-        Schema::create('funcionarios', function (Blueprint $table) {
-            $table->increments('id');            
-            $table->integer('usuario_id');
-            $table->integer('endereco_id');
-            $table->integer('empresa_id');
+        Schema::create('pais', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nome',100);
+            $table->integer('codigo');
             $table->timestamps();
         });
     }

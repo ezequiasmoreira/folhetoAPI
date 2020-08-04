@@ -18,6 +18,7 @@ class EmpresaSpec
 
     public function validarCamposObrigatorioSalvar($request){        
         $validator = Validator::make($request->all(), [
+            'codigo' => 'required|integer',
             'razao_social' => 'required|string|max:255',
             'nome_fantasia' => 'required|string|max:255',
             'cpf' => 'required|string|max:14|min:14|unique:empresas',
@@ -42,6 +43,7 @@ class EmpresaSpec
                
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer',
+            'codigo' => 'required|integer',
             'razao_social' => 'required|string|max:255',
             'nome_fantasia' => 'required|string|max:255',
             'cpf' => 'required|string|max:14|min:14|'.($cpfUnico ? '|unique:empresas':''),
