@@ -40,8 +40,8 @@ class FuncionarioService
         $this->usuarioService = new UserService();
         
         $funcionario = $this->obterPorId($request->id);       
-        $usuario = $this->obterUsuarioPorFuncionario($funcionario);
-        $endereco = $this->obterEnderecoPorFuncionario($funcionario);
+        $usuario = $funcionario->usuario;
+        $endereco = $funcionario->endereco;
         $this->funcionarioSpec->permiteSalvar($usuario);
         $this->atualizarUsuarioVinculado($request,$usuario);        
         $this->atualizarEnderecoVinculado($request,$endereco);
@@ -83,21 +83,6 @@ class FuncionarioService
         ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
         return $funcionario;
     }
-    public function obterUsuarioPorFuncionario($funcionario){
-        $this->usuarioService = new UserService();        
-        $usuario = $this->usuarioService->obterPorId($funcionario->usuario_id);
-        return $usuario;
-    }
-    public function obterEmpresaPorFuncionario($funcionario){
-        $this->empresaService = new EmpresaService();        
-        $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
-        return $empresa;
-    }
-    public function obterEnderecoPorFuncionario($funcionario){
-        $this->enderecoService = new EnderecoService();       
-        $endereco = $this->enderecoService->obterPorId($funcionario->endereco_id);
-        return $endereco;
-    }
     public function obterFuncionarioPorEndereco($endereco,$validaRetorno=true){
         $funcionario = $this->funcionarioRepository->obterFuncionarioPorEndereco($endereco);       
         ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
@@ -131,7 +116,7 @@ class FuncionarioService
     }
     public function obterFuncionarioProprietario($funcionario){
         $this->usuarioService = new UserService();
-        $empresa = $this->obterEmpresaPorFuncionario($funcionario);            
+        $empresa = $funcionario->empresa;            
         $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
         $funcionarioProprietario = $this->obterFuncionarioPorUsuario($usuarioDoProprietario);    
         return $funcionarioProprietario;
@@ -148,7 +133,7 @@ class FuncionarioService
 
         $metodo = FuncionarioConsulta::getValue("Padrao");        
         $campos = $this->funcionarioView->$metodo();              
-        $empresa = $this->obterEmpresaPorFuncionario($funcionario);
+        $empresa = $funcionario->empresa;
 
         return $this->funcionarioDTO->obterFuncionarios($empresa,$campos);
     }
@@ -200,7 +185,7 @@ class FuncionarioService
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
 
         if (!$ehProprietario) return ''; 
-        $empresa = $this->obterEmpresaPorFuncionario($funcionario);   
+        $empresa = $funcionario->empresa;   
         if($template){
             $metodo = FuncionarioConsulta::getValue($template);
             $template = $this->funcionarioView->$metodo();

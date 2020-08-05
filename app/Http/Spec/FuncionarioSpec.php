@@ -56,7 +56,7 @@ class FuncionarioSpec
         (!$request->id)     ? ApiException::throwException(25)          : true;
         (!$request->email)  ? ApiException::throwException(14,'E-mail') : true;        
         $funcionario = $this->funcionarioService->obterPorId($request->id);       
-        $usuario = $this->funcionarioService->obterUsuarioPorFuncionario($funcionario);       
+        $usuario = $funcionario->usuario;       
         (Boolean)$emailUnico = ($usuario->email != $request->email);
        
         $validator = Validator::make($request->all(), [
