@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Empresa;
+use App\Endereco;
 
 class Funcionario extends Model
 {
@@ -14,4 +17,14 @@ class Funcionario extends Model
         
     ];
     protected $table = 'funcionarios';
+
+    public function usuario(){
+        return $this->belongsTo(User::class);
+    }
+    public function empresa(){
+        return $this->belongsTo(Empresa::class);
+    }
+    public function endereco(){
+        return $this->belongsTo(Endereco::class);
+    }
 }

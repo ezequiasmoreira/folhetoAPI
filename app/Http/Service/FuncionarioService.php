@@ -51,9 +51,9 @@ class FuncionarioService
         $this->usuarioService = new UserService(); 
         $this->enderecoService = new EnderecoService();        
         $funcionario = $this->obterPorId($id);  
-        $this->funcionarioSpec->permiteExcluirFuncionario($funcionario);          
-        $usuario = $this->obterUsuarioPorFuncionario($funcionario);        
-        $endereco = $this->obterEnderecoPorFuncionario($funcionario);             
+        $this->funcionarioSpec->permiteExcluirFuncionario($funcionario);                  
+        $usuario =  $funcionario->usuario;         
+        $endereco = $funcionario->endereco;             
         $this->usuarioService->excluir($usuario,'Funcionario');
         $this->enderecoService->excluir($endereco);        
         return true;
@@ -70,7 +70,7 @@ class FuncionarioService
         ($origem !="Empresa") ? $this->funcionarioSpec->permiteSalvar($usuario) : true;
         
         $funcionario = new Funcionario();
-        $funcionario->codigo = ($origem !="Empresa") ? 1: $this->obterCodigo();
+        $funcionario->codigo = ($origem !="Empresa") ? $this->obterCodigo($empresa): 1;
         $funcionario->usuario_id = $usuario->id;
         $funcionario->empresa_id = $empresa->id;
         $funcionario->endereco_id = $endereco->id;
@@ -187,9 +187,9 @@ class FuncionarioService
         }                        
         return $this->funcionarioDTO->obterFuncionarioTemplate($funcionario_id,$template);
     }
-    public function obterCodigo(){
-        //implementar lógica
-        return 2;
+    public function obterCodigo($empresa){
+        (Integer) $codigo = $this->funcionarioRepository->obterProximoCodigo($empresa);
+        return ++$codigo;      
     }
     public function obterFuncionariosTemplate($template){
         $this->usuarioService = new UserService();

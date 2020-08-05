@@ -8,6 +8,9 @@ class FuncionarioRepository
     public function __construct()  {   
        $this->funcionario = new Funcionario();   
     }
+    public function obterPorId($funcionarioId){
+        return  $this->funcionario->find($funcionarioId);
+    }
     public function obterFuncionarioPorEndereco($endereco){
         return  Funcionario::where('endereco_id',$endereco->id)->first();
     }
@@ -16,9 +19,9 @@ class FuncionarioRepository
     }
     public function obterFuncionarios($empresa){
         return  Funcionario::where('empresa_id',$empresa->id)->get();
-    }
-    public function obterPorId($funcionarioId){
-        return  Funcionario::where('id',$funcionarioId)->first();
+    }    
+    public function obterProximoCodigo($empresa){
+        return  Funcionario::where('empresa_id',$empresa->id)->max('codigo');
     }
    
 }
