@@ -30,7 +30,7 @@ class EmpresaService
         if($empresa){
             return $empresa;
         }
-        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario,false);
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuario);
         if(!$funcionario){
             return false;
         }

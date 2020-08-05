@@ -46,7 +46,7 @@ class UserSpec
     public function validarPermiteExcluirUsuario($usuario,$origem){
         $this->usuarioService = new UserService();
 
-        (!$this->permiteSalvarFuncionario($usuario)) ? ApiException::throwException(27) : true;
+        (!$this->permiteSalvarFuncionario($usuario)) ? ApiException::throwException(30) : true;
         if (($this->ehFuncionario($usuario))&&($origem != 'Funcionario')) {
             ApiException::throwException(27);
         }        
@@ -103,7 +103,7 @@ class UserSpec
         if(!$this->usuarioLogadoPossuiEmpresa()){
             return false;
         }
-        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuarioLogado,false);  
+        $funcionario = $this->funcionarioService->obterFuncionarioPorUsuario($usuarioLogado);  
         if(!$funcionario){
             return false;
         } 

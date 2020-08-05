@@ -16,24 +16,22 @@
          * @var array
          */
         protected $fillable = [
-            'name', 'email', 'password','perfil'
+            'name', 
+            'email', 
+            'password',
+            'perfil'
         ];
 
-        /**
-         * The attributes that should be hidden for arrays.
-         *
-         * @var array
-         */
         protected $hidden = [
             'password', 'remember_token',
         ];
-
-        public function getJWTIdentifier()
-        {
+        public function funcionario() {
+           return $this->hasOne(Funcionario::class,'usuario_id');
+        }
+        public function getJWTIdentifier(){
             return $this->getKey();
         }
-        public function getJWTCustomClaims()
-        {
+        public function getJWTCustomClaims(){
             return [];
         }
     }

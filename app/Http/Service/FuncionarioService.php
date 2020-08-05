@@ -78,10 +78,8 @@ class FuncionarioService
         $this->utilService->validarStatus($salvou,true,19);
         return true;
     }
-    public function obterFuncionarioPorUsuario($usuario,$validaRetorno=true){
-        $funcionario = $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
-        ($validaRetorno) ? $this->funcionarioSpec->validar($funcionario) : true;
-        return $funcionario;
+    public function obterFuncionarioPorUsuario($usuario){
+        return $this->funcionarioRepository->obterFuncionarioPorUsuario($usuario);
     }
     public function obterFuncionarioPorEndereco($endereco,$validaRetorno=true){
         $funcionario = $this->funcionarioRepository->obterFuncionarioPorEndereco($endereco);       
@@ -118,7 +116,7 @@ class FuncionarioService
         $this->usuarioService = new UserService();
         $empresa = $funcionario->empresa;            
         $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
-        $funcionarioProprietario = $this->obterFuncionarioPorUsuario($usuarioDoProprietario);    
+        $funcionarioProprietario = $usuarioDoProprietario->funcionario;    
         return $funcionarioProprietario;
     }
     public function obterFuncionarios(){
@@ -126,7 +124,7 @@ class FuncionarioService
         $this->funcionarioView = new FuncionarioView();
 
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
-        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionario = $usuarioLogado->funcionario;
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
 
         if (!$ehProprietario) return ''; 
@@ -142,7 +140,7 @@ class FuncionarioService
         $this->funcionarioView = new FuncionarioView();
 
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
-        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionario = $usuarioLogado->funcionario;
         $funcionarioARetornar = $this->obterPorId($funcionario_id,false);
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
         (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
@@ -159,7 +157,7 @@ class FuncionarioService
         $this->funcionarioView = new FuncionarioView();
         
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
-        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionario = $usuarioLogado->funcionario;
         $funcionarioARetornar = $this->obterPorId($funcionario_id);
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
         (Boolean)$permiteRetornar = $this->funcionarioSpec->permiteRetornarFuncionario($funcionario,$funcionarioARetornar);
@@ -181,7 +179,7 @@ class FuncionarioService
         $this->funcionarioView = new FuncionarioView();
         
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();            
-        $funcionario = $this->obterFuncionarioPorUsuario($usuarioLogado);
+        $funcionario = $usuarioLogado->funcionario;
         (Boolean)$ehProprietario = $this->funcionarioSpec->ehProprietario($funcionario);
 
         if (!$ehProprietario) return ''; 
