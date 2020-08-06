@@ -16,10 +16,7 @@ class UsuarioDTO
             ];        
         return $dto;
     }
-    public function obterUsuarioTemplate($usuario_id,$template=null){
-        $this->usuarioService = new UserService();
-
-        $usuario = $this->usuarioService->obterPorId($usuario_id);
+    public function obterUsuarioTemplate($usuario,$template=null){
 
         $dto = array();
         isset($template['usuario.id'])      ? $dto = $dto  +   ['id'        => $usuario->id]        : true;

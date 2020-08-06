@@ -16,9 +16,7 @@ class PaisDTO
         ];
         return $dto;
     }
-    public function obterPaisTemplate($pais_id,$template=null){
-        $pais = new Pais();
-        $pais =  $pais->find($pais_id);
+    public function obterPaisTemplate($pais,$template=null){
         
         $dto = array();
         isset($template['pais.id'])     ? $dto = $dto  +   ['id'    => $pais->id]       : true;

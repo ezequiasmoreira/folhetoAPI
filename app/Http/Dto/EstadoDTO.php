@@ -24,10 +24,8 @@ class EstadoDTO
         ];
         return $dto;
     }
-    public function obterEstadoTemplate($estado_id,$template=null){
+    public function obterEstadoTemplate($estado,$template=null){
         $this->paisDTO = new PaisDTO();
-        $this->estadoService = new EstadoService();
-        $estado =  $this->estadoService->obterPorId($estado_id);
        
         $dto = array();
         isset($template['estado.id'])       ? $dto = $dto  +   ['id'    => $estado->id]         : true;
@@ -36,7 +34,7 @@ class EstadoDTO
         isset($template['estado.sigla'])   ? $dto = $dto  +   ['sigla' => $estado->sigla]    : true;
         
         if(isset($template['estado.pais'])){
-            $pais = $this->paisDTO->obterPaisTemplate($estado->pais_id,$template['estado.pais']);
+            $pais = $this->paisDTO->obterPaisTemplate($estado->pais,$template['estado.pais']);
             $dto = $dto + ['pais' => $pais];
         }
         return $dto;

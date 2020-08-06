@@ -168,7 +168,7 @@ class FuncionarioService
             $metodo = FuncionarioConsulta::getValue($template);
             $template = $this->funcionarioView->$metodo();
         }                        
-        return $this->funcionarioDTO->obterFuncionarioTemplate($funcionario_id,$template);
+        return $this->funcionarioDTO->obterFuncionarioTemplate($funcionarioARetornar,$template);
     }
     public function obterCodigo($empresa){
         (Integer) $codigo = $this->funcionarioRepository->obterProximoCodigo($empresa);
