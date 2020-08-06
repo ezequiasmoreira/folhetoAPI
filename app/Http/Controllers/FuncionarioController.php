@@ -29,6 +29,7 @@ class FuncionarioController extends Controller
         DB::beginTransaction();
         try {
             $endereco = $this->enderecoService->salvar($request);
+            $this->usuarioService->validarCamposObrigatorioSalvar($request);
             $usuario = $this->usuarioService->salvar($request,'Funcionario');
             $usuarioLogado =  $this->usuarioService->obterUsuarioLogado();
             $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);

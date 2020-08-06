@@ -75,7 +75,7 @@ class UserService
         }
         return $user;
     }
-    public function validarCamposObrigatorioCadastrar($request){
+    public function validarCamposObrigatorioSalvar($request){
         $this->userSpec->validarCamposObrigatorioCadastrar($request); 
         return true;
     }

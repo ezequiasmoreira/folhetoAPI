@@ -27,7 +27,7 @@ class UserController extends Controller
     public function salvar(Request $request){
         DB::beginTransaction();
         try {                       
-            $this->usuarioService->validarCamposObrigatorioCadastrar($request);
+            $this->usuarioService->validarCamposObrigatorioSalvar($request);
             $user = $this->usuarioService->salvar($request);                               
             $token = JWTAuth::fromUser($user); 
             DB::commit();                       
