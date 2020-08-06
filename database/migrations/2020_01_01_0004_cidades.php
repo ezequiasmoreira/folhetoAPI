@@ -16,7 +16,7 @@ class Cidades extends Migration
         Schema::create('cidades', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome',250);
-            $table->integer('codigo');
+            $table->integer('codigo')->unique();
             $table->integer('estado_id')->unsigned();
             $table->foreign('estado_id')->references('id')->on('estados')->onDelete('cascade');
             $table->timestamps();

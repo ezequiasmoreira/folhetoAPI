@@ -16,7 +16,8 @@ class Estados extends Migration
         Schema::create('estados', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome',200);
-            $table->integer('codigo');
+            $table->integer('codigo')->unique();
+            $table->string('sigla',5);
             $table->integer('pais_id')->unsigned();
             $table->foreign('pais_id')->references('id')->on('pais')->onDelete('cascade');
             $table->timestamps();

@@ -18,4 +18,14 @@ class Empresa extends Model
         'usuario_id'          
     ];
     protected $table = 'empresas';
+
+    public function funcionarios(){
+        return $this->hasMany(Funcionario::class);
+    }
+    public function usuario(){
+        return $this->belongsTo(User::class);
+    }
+    public function endereco(){
+        return $this->belongsTo(Endereco::class);
+    }
 }

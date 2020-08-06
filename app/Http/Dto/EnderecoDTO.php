@@ -12,11 +12,9 @@ class EnderecoDTO
     public function __construct()  {
         $this->enderecoRepository = new EnderecoRepository();
     }
-    public function obterEndereco($endereco_id,$campos=null){
+    public function obterEndereco($endereco,$campos=null){
         $this->cidadeDTO = new CidadeDTO();
-        $this->enderecoService = new EnderecoService();
         
-        $endereco =  $this->enderecoService->obterPorId($endereco_id);
         $dto =[
             'id'            => $endereco->id,
             'rua'           => $endereco->rua,
@@ -24,7 +22,7 @@ class EnderecoDTO
             'bairro'        => $endereco->bairro,
             'complemento'   => $endereco->complemento,
             'cep'           => $endereco->cep, 
-            'cidade'        => isset($campos['cidade']) ? $this->cidadeDTO->obterCidade($endereco->cidade_id,$campos['cidade']) : null,
+            'cidade'        => isset($campos['cidade']) ? $this->cidadeDTO->obterCidade($endereco->cidade,$campos['cidade']) : null,
         ];
         return $dto;
     }

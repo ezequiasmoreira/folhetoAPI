@@ -22,9 +22,9 @@ class FuncionarioDTO
         $this->usuarioService = new UserService();    
         
         $lista = array();
-        $funcionarios = $this->funcionarioRepository->obterFuncionarios($empresa);
+        $funcionarios = $empresa->funcionarios;
         foreach ($funcionarios as $funcionario) {
-            $usuario = $this->usuarioService->obterPorId($funcionario->usuario_id);
+            $usuario = $funcionario->usuario;
             $dto =[
                 'id'        => $funcionario->id,
                 'name'      => $usuario->name,
@@ -36,20 +36,17 @@ class FuncionarioDTO
         }
         return $lista;
     }
-    public function obterFuncionario($funcionario_id,$campos=null){
+    public function obterFuncionario($funcionario,$campos=null){
         $this->empresaDTO = new EmpresaDTO();
         $this->enderecoDTO = new EnderecoDTO();
-        $this->usuarioService = new UserService();
-        $this->funcionarioService = new FuncionarioService();
 
-        $funcionario =  $this->funcionarioService->obterPorId($funcionario_id);
-        $usuario = $this->usuarioService->obterPorId($funcionario->usuario_id);
+        $usuario = $funcionario->usuario;
         $dto =[
             'id'        => $funcionario->id,
             'name'      => $usuario->name,
             'email'     => $usuario->email,
-            'endereco'  => isset($campos['endereco']) ? $this->enderecoDTO->obterEndereco($funcionario->endereco_id,$campos['endereco']) : null,
-            'empresa'   => isset($campos['empresa']) ? $this->empresaDTO->obterEmpresa($funcionario->empresa_id,$campos['empresa']) : null,
+            'endereco'  => isset($campos['endereco']) ? $this->enderecoDTO->obterEndereco($funcionario->endereco,$campos['endereco']) : null,
+            'empresa'   => isset($campos['empresa']) ? $this->empresaDTO->obterEmpresa($funcionario->empresa,$campos['empresa']) : null,
         ];
         return $dto;
     }

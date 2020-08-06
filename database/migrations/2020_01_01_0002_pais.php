@@ -16,7 +16,8 @@ class Pais extends Migration
         Schema::create('pais', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome',100);
-            $table->integer('codigo');
+            $table->string('sigla',5);
+            $table->integer('codigo')->unique();
             $table->timestamps();
         });
     }

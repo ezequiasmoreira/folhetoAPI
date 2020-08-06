@@ -14,4 +14,8 @@ class Estado extends Model
         'pais_id'
     ];
     protected $table = 'estados';
+
+    public function pais(){
+        return $this->belongsTo(Pais::class);
+    }
 }

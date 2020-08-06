@@ -13,8 +13,11 @@ class Endereco extends Model
         'bairro',
         'complemento',
         'cep',
-        //fk
         'cidade_id'
     ];
     protected $table = 'enderecos';
+
+    public function cidade(){
+        return $this->belongsTo(Cidade::class);
+    }
 }

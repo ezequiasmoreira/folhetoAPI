@@ -14,4 +14,8 @@ class Interesse extends Model
         'usuario_id'
     ];
     protected $table = 'interesses';
+
+    public function usuario(){
+        return $this->belongsTo(User::class);
+    }
 }

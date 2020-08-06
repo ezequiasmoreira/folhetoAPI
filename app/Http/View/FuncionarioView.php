@@ -3,7 +3,16 @@ namespace App\Http\View;
 
 class FuncionarioView
 {
-    public function obterPadrao(){         
+    public function obterPadrao(){   
+        /*
+        return [
+            'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
+            'empresa'=>['endereco'=>['cidade'=>['estado'=>['pais'=>true]]],
+                'usuario'=>true
+            ],
+           
+        ]; 
+        */      
         return [
             'endereco'=>['cidade'=>['estado'=>['pais'=>true]]],            
             'empresa'=>true,

@@ -6,9 +6,8 @@ class PaisDTO
 {
     public function __construct()  {;
     }
-    public function obterPais($pais_id){
-        $pais = new Pais();
-        $pais =  $pais->find($pais_id);
+    public function obterPais($pais){
+        
         $dto =[
             'id'        => $pais->id,
             'nome'      => $pais->nome,

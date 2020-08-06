@@ -13,4 +13,8 @@ class Cidade extends Model
         'estado_id'
     ];
     protected $table = 'cidades';
+
+    public function estado(){
+        return $this->belongsTo(Estado::class);
+    }
 }

@@ -12,16 +12,15 @@ class EstadoDTO
     public function __construct()  {
         $this->estadoRepository = new EstadoRepository();
     }
-    public function obterEstado($estado_id,$campos=null){
+    public function obterEstado($estado,$campos=null){
         $this->paisDTO = new PaisDTO();
-        $this->estadoService = new EstadoService();
-        $estado =  $this->estadoService->obterPorId($estado_id);
+
         $dto =[
             'id'        => $estado->id,
             'nome'      => $estado->nome,
             'codigo'    => $estado->codigo,
-            'sigla'     => $estado->codigo,
-            'pais'      => isset($campos['pais']) ? $this->paisDTO->obterPais($estado->pais_id) : null,
+            'sigla'     => $estado->sigla,
+            'pais'      => isset($campos['pais']) ? $this->paisDTO->obterPais($estado->pais) : null,
         ];
         return $dto;
     }

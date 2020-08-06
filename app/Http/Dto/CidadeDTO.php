@@ -12,16 +12,14 @@ class CidadeDTO
     public function __construct()  {
         $this->cidadeRepository = new CidadeRepository();
     }
-    public function obterCidade($cidade_id,$campos=null){
+    public function obterCidade($cidade,$campos=null){
         $this->estadoDTO = new EstadoDTO();
-        $this->cidadeService = new CidadeService();
         
-        $cidade =  $this->cidadeService->obterPorId($cidade_id);
         $dto =[
             'id'        => $cidade->id,
             'nome'      => $cidade->nome,
             'codigo'    => $cidade->codigo,
-            'estado'    => isset($campos['estado']) ? $this->estadoDTO->obterEstado($cidade->estado_id,$campos['estado']) : null,
+            'estado'    => isset($campos['estado']) ? $this->estadoDTO->obterEstado($cidade->estado,$campos['estado']) : null,
         ];
         return $dto;
     }

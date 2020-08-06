@@ -150,7 +150,7 @@ class FuncionarioService
         $metodo = FuncionarioConsulta::getValue("Padrao");        
         $campos = $this->funcionarioView->$metodo();
 
-        return $this->funcionarioDTO->obterFuncionario($funcionario_id,$campos);
+        return $this->funcionarioDTO->obterFuncionario($funcionarioARetornar,$campos);
     }
     public function obterFuncionarioTemplate($funcionario_id,$template){
         $this->usuarioService = new UserService();

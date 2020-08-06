@@ -7,9 +7,7 @@ class UsuarioDTO
     private $usuarioService;
     public function __construct()  {
     }
-    public function obterUsuario($usuario_id,$campos=null){       
-        $this->usuarioService = new UserService();
-        $usuario = $this->usuarioService->obterPorId($usuario_id);
+    public function obterUsuario($usuario,$campos=null){       
         $dto = [  
                 'id'        => $usuario->id,
                 'name'      => $usuario->name,
