@@ -34,8 +34,7 @@ class EmpresaService
         if(!$funcionario){
             return false;
         }
-        $empresa = $this->obterPorId($funcionario->empresa_id);
-        return $empresa; 
+        return $funcionario->empresa; 
     }
     public function validarRequisicaoAtualizar($request){
         $this->empresaSpec = new EmpresaSpec();

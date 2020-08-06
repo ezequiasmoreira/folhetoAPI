@@ -32,8 +32,10 @@ class FuncionarioService
         $this->funcionarioSpec->validarCamposObrigatorioSalvar($request);
         return true;
     }
-    public function validarRequisicaoAtualizar($request){        
+    public function validarRequisicaoAtualizar($request){ 
+        $cidadeSevice = new CidadeService();       
         $this->funcionarioSpec->validarCamposObrigatorioAtualizar($request);
+        $cidadeSevice->obterPorId($request->id);
         return true;
     }
     public function atualizar($request){
@@ -115,7 +117,7 @@ class FuncionarioService
     public function obterFuncionarioProprietario($funcionario){
         $this->usuarioService = new UserService();
         $empresa = $funcionario->empresa;            
-        $usuarioDoProprietario = $this->usuarioService->obterPorId($empresa->usuario_id);
+        $usuarioDoProprietario = $empresa->usuario;
         $funcionarioProprietario = $usuarioDoProprietario->funcionario;    
         return $funcionarioProprietario;
     }

@@ -92,7 +92,7 @@ class UserSpec
     public function permiteSalvarFuncionario($usuario){
         $this->usuarioService = new UserService();
         $this->funcionarioService = new FuncionarioService();
-        $this->empresaService = new EmpresaService();
+        
         $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
         if(!$this->ehFuncionario($usuario)){
             return false;
@@ -107,7 +107,7 @@ class UserSpec
         if(!$funcionario){
             return false;
         } 
-        $empresa = $this->empresaService->obterPorId($funcionario->empresa_id);
+        $empresa = $funcionario->empresa;
         if($empresa->usuario_id != $usuarioLogado->id){
             return false;
         }   
