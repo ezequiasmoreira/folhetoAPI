@@ -76,7 +76,7 @@ class UserService
         return $user;
     }
     public function validarCamposObrigatorioSalvar($request){
-        $this->userSpec->validarCamposObrigatorioCadastrar($request); 
+        $this->userSpec->validarCamposObrigatorioSalvar($request); 
         return true;
     }
     public function validarCamposObrigatorioAtualizar($request){
@@ -103,7 +103,8 @@ class UserService
     }
     public function excluir($usuario,$origem=null){
         $this->empresaService = new EmpresaService();
-        $this->interesseService = new InteresseService();        
+        $this->interesseService = new InteresseService();
+
         $this->userSpec->validarUsuario($usuario);
         $this->userSpec->validarPermiteExcluirUsuario($usuario,$origem);         
         (Boolean)$permiteExcluir = $this->userSpec->validarPermiteExcluirUsuarioPorOrigem($usuario,$origem);   

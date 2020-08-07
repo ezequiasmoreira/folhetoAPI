@@ -28,6 +28,9 @@
         public function funcionario() {
            return $this->hasOne(Funcionario::class,'usuario_id');
         }
+        public function empresa() {
+            return $this->hasOne(Empresa::class,'usuario_id');
+         }
         public function getJWTIdentifier(){
             return $this->getKey();
         }

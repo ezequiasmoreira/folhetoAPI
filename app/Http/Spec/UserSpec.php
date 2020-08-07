@@ -6,6 +6,7 @@ use App\Http\Service\EmpresaService;
 use App\Enums\Perfil;
 use App\Http\Service\FuncionarioService;
 use App\Http\Service\UserService;
+use App\User;
 
 class UserSpec
 {
@@ -46,23 +47,28 @@ class UserSpec
     public function validarPermiteExcluirUsuario($usuario,$origem){
         $this->usuarioService = new UserService();
 
-        (!$this->permiteSalvarFuncionario($usuario)) ? ApiException::throwException(30) : true;
-        if (($this->ehFuncionario($usuario))&&($origem != 'Funcionario')) {
-            ApiException::throwException(27);
-        }        
-        if(!$this->ehFuncionario($usuario)){
+        (Boolean)$ehFuncionario             = $this->ehFuncionario($usuario);
+        (Boolean)$permiteSalvarFuncionario  = $this->permiteSalvarFuncionario($usuario);        
+
+        (!$permiteSalvarFuncionario && $ehFuncionario)  ? ApiException::throwException(30) : true;        
+        (($ehFuncionario)&&($origem != 'Funcionario'))  ? ApiException::throwException(27) : true;
+        
+        if(!$ehFuncionario){
             $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
             ($usuario->id != $usuarioLogado->id) ? ApiException::throwException(30) : true;
-        }        
+        }       
         return  true;               
     }
-    public function validarPermiteExcluirUsuarioPorOrigem($usuario,$origem){
+    public function validarPermiteExcluirUsuarioPorOrigem(User $usuario,$origem){
         $this->empresaService = new EmpresaService();
-        (Boolean)$possuiEmpresa = $this->empresaService->usuarioPossuiEmpresa($usuario);
+
+        (Boolean)$possuiEmpresa = $usuario->empresa;
+        ($possuiEmpresa) ?  ApiException::throwException(20,$usuario->name) : true;
+
         if(($origem == "Empresa")){
             return  true;  
         } 
-        return $possuiEmpresa ? false : true;                        
+        return true;                        
     }
 
     public function usuarioPossuiEmpresa($usuario){
@@ -145,7 +151,7 @@ class UserSpec
         }
         return true;      
     }
-    public function validarCamposObrigatorioCadastrar($request){
+    public function validarCamposObrigatorioSalvar($request){
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
