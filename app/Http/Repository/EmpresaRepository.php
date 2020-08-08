@@ -14,8 +14,8 @@ class EmpresaRepository
     public function obterEmpresaPorUsuario($usuario){
         return  Empresa::where('usuario_id',$usuario->id)->first();
     }
-    public function obterPorId($id){
-        return $this->empresa->find($id);
+    public function obterPorId($empresa_id){
+        return $this->empresa->find($empresa_id);
     }
    
 }

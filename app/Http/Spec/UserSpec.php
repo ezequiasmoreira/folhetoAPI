@@ -44,14 +44,17 @@ class UserSpec
         $empresa = $this->empresaService->obterEmpresaPorUsuario($usuarioLogado);       
         return  ($empresa)?true:false;               
     }
-    public function validarPermiteExcluirUsuario($usuario,$origem){
+
+    public function validarPermiteExcluirUsuario($usuario,$origem)
+    {
         $this->usuarioService = new UserService();
 
         (Boolean)$ehFuncionario             = $this->ehFuncionario($usuario);
-        (Boolean)$permiteSalvarFuncionario  = $this->permiteSalvarFuncionario($usuario);        
+        (Boolean)$permiteSalvarFuncionario  = $this->permiteSalvarFuncionario($usuario); 
+        (Boolean)$origemPermitida  = (($origem == 'Funcionario') || ($origem == 'Empresa'));        
 
         (!$permiteSalvarFuncionario && $ehFuncionario)  ? ApiException::throwException(30) : true;        
-        (($ehFuncionario)&&($origem != 'Funcionario'))  ? ApiException::throwException(27) : true;
+        ($ehFuncionario && ($origemPermitida==false))  ? ApiException::throwException(27) : true;
         
         if(!$ehFuncionario){
             $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
@@ -59,15 +62,16 @@ class UserSpec
         }       
         return  true;               
     }
+
     public function validarPermiteExcluirUsuarioPorOrigem(User $usuario,$origem){
         $this->empresaService = new EmpresaService();
-
-        (Boolean)$possuiEmpresa = $usuario->empresa;
-        ($possuiEmpresa) ?  ApiException::throwException(20,$usuario->name) : true;
 
         if(($origem == "Empresa")){
             return  true;  
         } 
+
+        (Boolean)$possuiEmpresa = $usuario->empresa;
+        ($possuiEmpresa) ?  ApiException::throwException(20,$usuario->name) : true;        
         return true;                        
     }
 

@@ -49,17 +49,20 @@ class FuncionarioService
         $this->atualizarEnderecoVinculado($request,$endereco);
         return true;
     }
-    public function excluir($id){
+
+    public function excluir(Funcionario $funcionario,string $origem='Funcionario')
+    {
         $this->usuarioService = new UserService(); 
-        $this->enderecoService = new EnderecoService();        
-        $funcionario = $this->obterPorId($id);  
-        $this->funcionarioSpec->permiteExcluirFuncionario($funcionario);                  
+        $this->enderecoService = new EnderecoService();  
+
+        $this->funcionarioSpec->permiteExcluirFuncionario($funcionario,$origem);                  
         $usuario =  $funcionario->usuario;         
         $endereco = $funcionario->endereco;             
-        $this->usuarioService->excluir($usuario,'Funcionario');
+        $this->usuarioService->excluir($usuario,$origem);
         $this->enderecoService->excluir($endereco);        
         return true;
     }
+    
     public function salvar($usuario,$empresa,$endereco,$origem="Funcionario"){
         $this->usuarioService = new UserService();
         $this->empresaService = new EmpresaService();        

@@ -58,7 +58,8 @@ class FuncionarioController extends Controller
     public function excluir($id) {
         DB::beginTransaction();
         try {
-            $this->funcionarioService->excluir($id);
+            $funcionario = $this->funcionarioService->obterPorId($id);
+            $this->funcionarioService->excluir($funcionario);
             DB::commit(); 
         } catch (Exception $exception) {
             DB::rollBack();

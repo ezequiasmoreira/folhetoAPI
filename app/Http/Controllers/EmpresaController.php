@@ -19,12 +19,12 @@ class EmpresaController extends Controller
         DB::beginTransaction();
         try {
             $this->empresaService->validarRequisicao($request);
-            $this->empresaService->salvar($request);       
+            $this->empresaService->salvar($request); 
+            DB::commit();      
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
-        }
-        DB::commit();
+        }        
         return response()->json(['mensagem'=> 'Salvo com sucesso'],200);
     }
     public function salvarLogo(Request $request){
@@ -36,11 +36,11 @@ class EmpresaController extends Controller
             $empresa = $this->empresaService->obterPorId($request->empresaId);
             $empresa->logo =  $photoUrl;
             $empresa->save();
+            DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
-        }
-        DB::commit();
+        }        
         return response()->json(['url' =>  $photoUrl],200);
     }
     public function atualizar(Request $request){
@@ -48,33 +48,23 @@ class EmpresaController extends Controller
         try {
             $this->empresaService->validarRequisicaoAtualizar($request);
             $this->empresaService->atualizar($request);
+            DB::commit(); 
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
-        }
-        DB::commit();    
+        }           
         return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
     public function excluir($id) {
-        $this->getEmpresa($id)->delete();
+        DB::beginTransaction();
+        try {
+            $empresa = $this->empresaService->obterPorId($id);
+            $this->empresaService->excluir($empresa);
+            DB::commit(); 
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
+        }       
         return response()->json(['mensagem' => 'excluído com sucesso'],200);
-    }
-    protected function getEmpresa($id)  {
-        return $this->empresa->find($id);
-    }
-    public function getEmpresaUsuarioLogado()  {      
-        $empresa = $this->obterEmpresaUsuarioLogado();
-        return response()->json($empresa,200);
-    }
-    protected function obterEmpresaUsuarioLogado(){
-        $usuario = Auth::user();
-        /*if ($usuario->perfil == 'funcionario'){
-            $funcionario = Funcionario::where('usuario_id',$usuario->id)->get('*');
-            $empresa = $this->getEmpresa($funcionario->empresa_id);
-            return $empresa;
-        }
-        */
-        $empresa = Empresa::where('usuario_id',$usuario->id)->first();
-        return $empresa;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Spec;
 use App\Exceptions\ApiException;
+use App\Funcionario;
 use App\Http\Service\FuncionarioService;
 use App\Http\Service\UserService;
 use Illuminate\Support\Facades\Validator;
@@ -19,8 +20,22 @@ class FuncionarioSpec
         $this->possuiPermissaoParaSalvarFuncionario($usuario);
         return true;    
     }
-    public function permiteExcluirFuncionario($funcionario){        
-        ($this->ehProprietario($funcionario)) ? ApiException::throwException(31) : true; 
+
+    public function permiteExcluirFuncionario(Funcionario $funcionario,string $origem)
+    { 
+        $this->usuarioService = new UserService();
+        
+        if ($this->ehProprietario($funcionario) && $origem !="Empresa") 
+        {
+            ApiException::throwException(31);
+        }
+
+        $usuarioLogado = $this->usuarioService->obterUsuarioLogado();
+
+        if (!$this->ehProprietario($usuarioLogado->funcionario)) 
+        {
+            ApiException::throwException(30);
+        }
         return true;    
     }
     public function ehProprietario($funcionario){ 

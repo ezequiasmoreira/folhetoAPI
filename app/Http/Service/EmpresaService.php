@@ -1,13 +1,17 @@
 <?php
 namespace App\Http\Service;
-use Illuminate\Support\Facades\Auth;
+use App\Exceptions\ApiException;
 use App\Empresa;
+use App\Enums\Perfil;
 use App\Http\Repository\EmpresaRepository;
 use App\Http\Spec\EmpresaSpec;
 use App\Http\Service\EnderecoService;
 use App\Http\Service\FuncionarioService;
 use App\Http\Service\UserService;
 use App\Http\Service\UtilService;
+use App\User;
+use Illuminate\Http\Request;
+
 class EmpresaService
 {
     private $enderecoService;
@@ -16,15 +20,20 @@ class EmpresaService
     private $empresaRepository;
     private $utilService;
     private $empresaSpec;
-    public function __construct()  {
+
+    public function __construct()  
+    {
         $this->empresaSpec = new EmpresaSpec();
         $this->empresaRepository = new EmpresaRepository();
     }
-    public function usuarioPossuiEmpresa($usuario){       
-        $empresa = $this->empresaRepository->obterEmpresaPorUsuario($usuario);
-        return $empresa ? true : false;        
+
+    public function usuarioPossuiEmpresa(User $usuario)
+    { 
+        return $usuario->empresa ? true : false;        
     }
-    public function obterEmpresaPorUsuario($usuario){   
+
+    public function obterEmpresaPorUsuario(User $usuario)
+    {   
         $this->funcionarioService = new FuncionarioService();     
         $empresa = $this->empresaRepository->obterEmpresaPorUsuario($usuario);
         if($empresa){
@@ -36,7 +45,9 @@ class EmpresaService
         }
         return $funcionario->empresa; 
     }
-    public function validarRequisicaoAtualizar($request){
+
+    public function validarRequisicaoAtualizar(Request $request)
+    {
         $this->empresaSpec = new EmpresaSpec();
         $this->usuarioService = new UserService();       
         
@@ -49,9 +60,10 @@ class EmpresaService
         $this->empresaSpec->validarTipoJuridica($request); 
         return true;
     }
-    public function validarRequisicao($request){
-        $this->empresaSpec = new EmpresaSpec();
-        $this->usuarioService = new UserService();       
+
+    public function validarRequisicao(Request $request)
+    {
+        $this->empresaSpec = new EmpresaSpec();      
         
         $this->empresaSpec->validarCamposObrigatorioSalvar($request);
         $this->empresaSpec->validarRegraParaCriarEmpresa();        
@@ -59,17 +71,23 @@ class EmpresaService
         $this->empresaSpec->validarTipoJuridica($request); 
         return true;
     }
-    public function validar($empresa){
+
+    public function validar($empresa)
+    {
         $this->empresaSpec = new EmpresaSpec();
         $this->empresaSpec->validar($empresa);       
         return true;
     }
-    public function obterPorId($id){
-        $empresa = $this->empresaRepository->obterPorId($id);
+
+    public function obterPorId(int $empresa_id)
+    {
+        $empresa = $this->empresaRepository->obterPorId($empresa_id);
         $this->empresaSpec->validar($empresa);       
         return $empresa;
     }
-    public function salvar($request){
+
+    public function salvar($request)
+    {
         $this->utilService = new UtilService();
         $this->usuarioService = new UserService();
         $this->enderecoService = new EnderecoService();
@@ -95,14 +113,47 @@ class EmpresaService
         $this->funcionarioService->salvar($usuarioLogado,$empresa,$endereco,"Empresa");        
         return true;
     }
-    public function atualizar($request){ 
+
+    public function atualizar($request)
+    { 
         $empresa = $this->obterPorId($request->id);
         $empresa->update($request->all());     
         return true;
     }
-    public function obterEmpresaPorEndereco($endereco,$validaRetorno=true){ 
+
+    public function obterEmpresaPorEndereco($endereco,$validaRetorno=true)
+    { 
         $empresa = $this->empresaRepository->obterEmpresaPorEndereco($endereco);
         ($validaRetorno) ? $this->empresaSpec->validar($empresa) : true;
         return $empresa;
+    }
+
+    public function excluir(Empresa $empresa)
+    {
+        $this->funcionarioService   = new FuncionarioService();
+        $this->usuarioService       = new UserService();
+        $this->enderecoService      = new EnderecoService();
+
+        $this->empresaSpec->permiteExcluirEmpresa($empresa);
+        $usuarioProprietario        = $empresa->usuario;
+        $funcionarioProprietario    = $usuarioProprietario->funcionario;
+        $endereco                   = $funcionarioProprietario->endereco;
+        $funcionarios               = $empresa->funcionarios;
+
+        foreach ($funcionarios as $funcionario) 
+        {
+            if($funcionarioProprietario->id != $funcionario->id)
+            {
+                $this->funcionarioService->excluir($funcionario,'Empresa');
+            }
+        }
+
+        $empresa->delete();        
+        $this->enderecoService->excluir($endereco);
+        $perfilUsuario = Perfil::getValue('Usuario');
+        $usuarioProprietario->perfil = $perfilUsuario; 
+        $usuarioProprietario->save();
+        $this->usuarioService->excluir($usuarioProprietario);
+        return true;
     }
 }

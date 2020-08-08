@@ -28,21 +28,21 @@ class UserController extends Controller
         DB::beginTransaction();
         try {                       
             $this->usuarioService->validarCamposObrigatorioSalvar($request);
-            $user = $this->usuarioService->salvar($request);                               
-            $token = JWTAuth::fromUser($user); 
+            $usuario = $this->usuarioService->salvar($request);                               
+            $token = JWTAuth::fromUser($usuario); 
             DB::commit();                       
         } catch (Exception $exception) {
             DB::rollBack();
             return response()->json(['mensagem'=> $exception->getMessage()],500);
         }       
-        return response()->json(compact('user','token'),200);
+        return response()->json(compact('usuario','token'),200);
     }
     public function atualizar(Request $request){
         try {
             $this->usuarioService->validarCamposObrigatorioAtualizar($request);
             $this->usuarioService->atualizar($request);                       
-        } catch (Exception $e) {
-            return response()->json(['mensagem'=> $e->getMessage()],500);
+        } catch (Exception $exception) {
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
         return response()->json(['mensagem'=> 'Atualizado com sucesso'],200);
     }
