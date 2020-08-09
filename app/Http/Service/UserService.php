@@ -111,5 +111,10 @@ class UserService
         ($permiteExcluir) ? $this->interesseService->excluirPorUsuario($usuario) : true;        
         return $permiteExcluir ?  $usuario->delete() : true;
     }
+
+    public function permiteSalvarInteresse(User $usuario)
+    {       
+        return $this->userSpec->permiteSalvarInteresse($usuario);
+    }
      
 }

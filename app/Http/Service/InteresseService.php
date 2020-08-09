@@ -13,30 +13,33 @@ use App\User;
 class InteresseService
 {
     public $usuarioService;
-    public $interreseSpec;
+    public $interesseSpec;
     public $interesseRepository;
-    public function __construct()  {
-        $this->interreseSpec = new InteresseSpec();
+    public function __construct()  
+    {
+        $this->interesseSpec = new InteresseSpec();
         $this->interesseRepository = new InteresseRepository();
     }
-    public function salvar (User $usuario){  
+
+    public function salvar (User $usuario)
+    {  
         $this->usuarioService = new UserService();
-        $this->usuarioService->validarUsuario($usuario);              
-        $interesse = Interesse::where('usuario_id',$usuario->id)->first();
-        if($interesse){
-            ApiException::throwException(1);            
-        }
-        $enums = TipoInteresse::getValues();
-        foreach ($enums as $enun) {
+        $enun_interesses = TipoInteresse::getValues();
+
+        $this->usuarioService->validarUsuario($usuario);  
+        $this->usuarioService->permiteSalvarInteresse($usuario);
+
+        foreach ($enun_interesses as $enun_interesse) {
             $interesse = new Interesse();
-            $interesse->codigo = $enun['codigo'];
-            $interesse->descricao = $enun['descricao'];
+            $interesse->codigo = $enun_interesse['codigo'];
+            $interesse->descricao = $enun_interesse['descricao'];
             $interesse->status = false;
             $interesse->usuario_id = $usuario->id;
             $interesse->save();
         }
         return true;
     }
+    
     public function interessePermiteAtualizar (Request $request){  
         $this->usuarioService = new UserService();
         $tipoInteresses = TipoInteresse::getValues();            

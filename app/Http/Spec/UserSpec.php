@@ -21,6 +21,12 @@ class UserSpec
             ApiException::throwException(5,'Usuário'); 
         }        
     }
+
+    public function permiteSalvarInteresse(User $usuario)
+    {
+        return (count($usuario->interesses) > 0) ? ApiException::throwException(1) : true;  
+    }
+
     public function validarPermissaoPorPerfil($usuario,$usuarioLogado){        
         $perfilUsuario = Perfil::getValue('Usuario');           
         if ($usuarioLogado->perfil == $perfilUsuario) {

@@ -25,12 +25,22 @@
         protected $hidden = [
             'password', 'remember_token',
         ];
-        public function funcionario() {
+
+        public function funcionario() 
+        {
            return $this->hasOne(Funcionario::class,'usuario_id');
         }
-        public function empresa() {
+
+        public function empresa() 
+        {
             return $this->hasOne(Empresa::class,'usuario_id');
-         }
+        }
+
+        public function interesses()
+        {
+            return $this->hasMany(Interesse::class,'usuario_id');
+        }
+
         public function getJWTIdentifier(){
             return $this->getKey();
         }
