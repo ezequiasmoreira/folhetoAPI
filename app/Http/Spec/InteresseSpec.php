@@ -15,8 +15,8 @@ class InteresseSpec
         }
     }
     public function validarStatusPermitido($status){
-        if ($status != 1 && $status !=2){
-            ApiException::throwException(4,$status.','.'1 ou 2'); 
+        if ($status != 0 && $status !=1){
+            ApiException::throwException(4,$status.','.'0 ou 1'); 
         }
     }
     public function validarUsuarioPermitido($primeiroUsuario,$usuario){

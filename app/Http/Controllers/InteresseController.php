@@ -1,13 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Enums\TipoInteresse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Service\InteresseService;
-use App\Exceptions\ApiException;
-use App\Http\Service\UserService;
-use Illuminate\Support\Facades\Auth;
-use App\User;
 use Exception;
 
 class InteresseController extends Controller
@@ -15,30 +10,18 @@ class InteresseController extends Controller
     public function __construct()  {
     }
 
-    public function testarEnum(Request $request){        
+    public function atualizar(Request $request){   
+        DB::beginTransaction();    
         try {
             $interesseService = new InteresseService(); 
             $interesseService->interessePermiteAtualizar($request);
             $interesseService->atualizar($request);
-            return response()->json(count($enums) ,200);
-            $interesse = Interesse::where('usuario_id',1)->first();
-            if($interesse){
-                ApiException::throwException(1);            
-            }
-            $enums = TipoInteresse::getValues();
-            foreach ($enums as $enun) {
-            }
-            $retorno = [
-                'mensagem'=> 'Interreses cadastrado com sucesso!'
-            ];
-        } catch (Exception $e) {
-            //echo 'Exceção capturada: ',  $e->getMessage(), "\n";+
-            return response()->json(['mensagem'=> $e->getMessage()],500);
+            DB::commit();                       
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response()->json(['mensagem'=> $exception->getMessage()],500);
         }
-        return response()->json(['mensagem'=> $retorno],200); 
-        
-
-        
+        return response()->json(['mensagem'=> 'Atualizado com sucesso'],200); 
     }
 
 }

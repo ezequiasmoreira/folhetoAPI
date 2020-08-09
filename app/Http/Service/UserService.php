@@ -21,22 +21,27 @@ class UserService
        $this->userSpec = new UserSpec();
        $this->userRepository = new UserRepository();
     }
+    
     public function obterUsuarioLogado(){
         $usuario = Auth::user();
         $this->userSpec->validarUsuario($usuario);
         return $usuario;
     }
+
     public function obterPorId($id){ 
         $usuario = $this->userRepository->obterPorId($id); 
         $this->userSpec->validarUsuario($usuario);      
         return $usuario;
     }
+
     public function validarUsuario($usuario){        
         return $this->userSpec->validarUsuario($usuario);
     }
+
     public function permiteSalvarFuncionario($usuario){        
         return $this->userSpec->permiteSalvarFuncionario($usuario);
     }
+
     public function atualizar($request){   
         $usuario = $this->obterPorId($request->id);
         $usuarioLogado = $this->obterUsuarioLogado();  
@@ -45,16 +50,27 @@ class UserService
         $usuario->save();  
         return true;
     }
-    public function usuarioPermiteAlterar($usuario,$usuarioLogado){        
+
+    public function usuarioPermiteAlterar($usuario,$usuarioLogado)
+    {        
         $perfisPermitido = $this->obterPerfisPermitido(); 
         $this->userSpec->validarPerfilPermitido($usuarioLogado->perfil,$perfisPermitido);
         $this->userSpec->validarPermissaoPorPerfil($usuario,$usuarioLogado);
         return true;
     }
+
+    public function validarPermissaoPorPerfil(User $usuario,User $usuarioLogado)
+    {        
+        $this->userSpec->validarPermissaoPorPerfil($usuario,$usuarioLogado);
+        return true;
+    }
+
     public function obterPerfisPermitido(){
        return Perfil::getValues();
     }
-    public function salvar($request,$perfil='Usuario'){
+
+    public function salvar($request,$perfil='Usuario')
+    {
         $this->interesseService = new InteresseService(); 
 
         if ($request->get('perfil')){
@@ -75,16 +91,23 @@ class UserService
         }
         return $user;
     }
-    public function validarCamposObrigatorioSalvar($request){
+
+    public function validarCamposObrigatorioSalvar($request)
+    {
         $this->userSpec->validarCamposObrigatorioSalvar($request); 
         return true;
     }
-    public function validarCamposObrigatorioAtualizar($request){
+
+    public function validarCamposObrigatorioAtualizar($request)
+    {
         $this->userSpec->validarCamposObrigatorioAtualizar($request); 
         return true;
     }
-    public function atualizarPerfilFuncionario($empresa,$usuario){
+
+    public function atualizarPerfilFuncionario($empresa,$usuario)
+    {
         $this->empresaService = new EmpresaService();
+
         $this->empresaService->validar($empresa);
         $this->validarUsuario($usuario);
         $this->validarEmpresaVinculadaUsuarioLogado($empresa,$usuario);
@@ -94,14 +117,20 @@ class UserService
         $this->userSpec->validarStatus($salvou,true,21);
         return true;
     }
-    public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuario){
+
+    public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuario)
+    {
         $this->userSpec->validarEmpresaVinculadaUsuarioLogado($empresa,$usuario);
         return true;
     }
-    public function usuarioLogadoPossuiEmpresa(){
+
+    public function usuarioLogadoPossuiEmpresa()
+    {
         return $this->userSpec->usuarioLogadoPossuiEmpresa();
     }
-    public function excluir($usuario,$origem=null){
+
+    public function excluir($usuario,$origem=null)
+    {
         $this->empresaService = new EmpresaService();
         $this->interesseService = new InteresseService();
 

@@ -37,9 +37,14 @@ Route::group(["prefix" => "cidade","namespace" => "localizacao"], function () {
 });
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::put('enum', 'InteresseController@testarEnum');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('closed', 'DataController@closed');
+
+    //interesse
+    Route::group(["prefix" => "interesse"], function () {
+        Route::put("/atualizar", "InteresseController@atualizar");
+    });
+
     //usuário
     Route::group(["prefix" => "usuario"], function () {
         Route::put("/atualizar", "UserController@atualizar");

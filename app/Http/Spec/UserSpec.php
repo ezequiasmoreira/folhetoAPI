@@ -16,7 +16,8 @@ class UserSpec
     public function __construct()  {
     }
     
-    public function validarUsuario($usuario){
+    public function validarUsuario($usuario)
+    {
         if(!$usuario){
             ApiException::throwException(5,'Usuário'); 
         }        
@@ -27,7 +28,8 @@ class UserSpec
         return (count($usuario->interesses) > 0) ? ApiException::throwException(1) : true;  
     }
 
-    public function validarPermissaoPorPerfil($usuario,$usuarioLogado){        
+    public function validarPermissaoPorPerfil(User $usuario,User $usuarioLogado)
+    {        
         $perfilUsuario = Perfil::getValue('Usuario');           
         if ($usuarioLogado->perfil == $perfilUsuario) {
            $this->validarPerfilUsuario($usuario,$usuarioLogado);
@@ -37,7 +39,9 @@ class UserSpec
         } 
         return true;
     }
-    public function validarPerfilUsuario($usuario,$usuarioLogado){
+
+    public function validarPerfilUsuario(User $usuario,User $usuarioLogado)
+    {
         if($usuario->id != $usuarioLogado->id){
             ApiException::throwException(7,'('.$usuarioLogado->name.'),('.$usuario->name.')');
         }
@@ -89,13 +93,17 @@ class UserSpec
         }
         return false;        
     }
-    public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuarioLogado){
+
+    public function validarEmpresaVinculadaUsuarioLogado($empresa,$usuarioLogado)
+    {
         if($empresa->usuario_id != $usuarioLogado->id){
             ApiException::throwException(10,$usuarioLogado->Name.','.$empresa->razao_social);
         }
         return true;
     }
-    public function validarPerfilFuncionario($usuario,$usuarioLogado){       
+
+    public function validarPerfilFuncionario($usuario,$usuarioLogado)
+    {       
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if (!($usuarioLogado->perfil == $perfilFuncionario)){
             ApiException::throwException(9,$usuarioLogado->perfil);
@@ -105,7 +113,9 @@ class UserSpec
         } 
         return true;
     }
-    public function permiteSalvarFuncionario($usuario){
+
+    public function permiteSalvarFuncionario($usuario)
+    {
         $this->usuarioService = new UserService();
         $this->funcionarioService = new FuncionarioService();
         
@@ -129,14 +139,18 @@ class UserSpec
         }   
         return true;
     }
-    private function ehFuncionario($usuario){
+
+    private function ehFuncionario($usuario)
+    {
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if (!($usuario->perfil == $perfilFuncionario)){
             return false;
         }         
         return true;
     }
-    public function permitePerfilFuncionario($perfil,$permite){
+
+    public function permitePerfilFuncionario($perfil,$permite)
+    {
         $perfilFuncionario = Perfil::getValue('Funcionario');
         if($perfil != $perfilFuncionario){
             return true;
@@ -147,7 +161,8 @@ class UserSpec
         return true;
     }
 
-    public function validarPerfilPermitido($perfil,$perfisPermitido){
+    public function validarPerfilPermitido($perfil,$perfisPermitido)
+    {
         $permitido = false;
         $perfis ='';
         foreach ($perfisPermitido as $perfilPermitido) { 
@@ -161,7 +176,9 @@ class UserSpec
         }
         return true;      
     }
-    public function validarCamposObrigatorioSalvar($request){
+
+    public function validarCamposObrigatorioSalvar($request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -172,7 +189,9 @@ class UserSpec
             }
         return true;      
     }
-    public function validarCamposObrigatorioAtualizar($request){        
+
+    public function validarCamposObrigatorioAtualizar($request)
+    {        
         $validator = Validator::make($request->all(), [
             'id' =>  'required',
             'name' => 'required|string|max:255'
@@ -182,7 +201,9 @@ class UserSpec
         }
         return true;      
     }
-    public function validarStatus($enviado,$esperado,$mensagemDoErro,$parametros=null){        
+
+    public function validarStatus($enviado,$esperado,$mensagemDoErro,$parametros=null)
+    {        
         if($enviado != $esperado){
             ApiException::throwException(16,$mensagemDoErro,$parametros);
         }
